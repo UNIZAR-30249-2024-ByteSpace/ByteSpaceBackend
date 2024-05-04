@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const espacios = require('./espacio.js')
+const usuarios = require('./usuario.js')
+const reservas = require('./reserva.js')
 
 // URL de conexión a la base de datos
 const uri = 'mongodb+srv://bytespace:oWhNJuKouGNocXLS@cluster0.gvk8lx8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
@@ -11,8 +14,11 @@ mongoose.connect(uri)
 // Definir un esquema (schema)
 const Schema = mongoose.Schema;
 const miSchema = new Schema({
-  campo1: String,
-  campo2: Number
+  uri: uri,
+  usuarios: usuarios,
+  espacios: espacios,
+  reservas: reservas,
+  mongoose: mongoose
 });
 
 // Crear un modelo
