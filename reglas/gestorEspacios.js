@@ -1,4 +1,4 @@
-const EspacioModelo = require('./ruta/a/tu/modelo/EspacioModelo');
+const EspacioModelo = require('../modelos/modelo.espacio.js');
 
 async function obtenerEspaciosReservables() {
     try {
