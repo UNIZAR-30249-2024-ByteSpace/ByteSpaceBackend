@@ -14,16 +14,8 @@ const ReservaSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    dia: {
-        type: Number,
-        required: true
-    },
-    mes: {
-        type: Number,
-        required: true
-    },
-    año: {
-        type: Number,
+    fecha: {
+        type: Date,
         required: true
     },
     idPersona: {
@@ -34,6 +26,10 @@ const ReservaSchema = mongoose.Schema({
     idEspacio: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Espacio',
+        required: true
+    },
+    potencialInvalida: {
+        type: Boolean,
         required: true
     }
 });
