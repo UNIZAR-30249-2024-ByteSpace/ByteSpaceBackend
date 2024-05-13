@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const EspacioSchema = mongoose.Schema({
-    id: {
+    _id: {
         type: String,
         required: true,
         unique: true
