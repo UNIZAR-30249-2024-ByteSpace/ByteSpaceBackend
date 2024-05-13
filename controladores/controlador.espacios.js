@@ -16,7 +16,7 @@ async function obtenerEspaciosReservables() {
 
 async function obtenerEspacioPorId(idEspacio) {
     try {
-        const espacio = await EspacioModelo.findById(idEspacio);
+        const espacio = await EspacioModelo.find({ id: idEspacio });
         console.log(espacio)
         return espacio;
     } catch (error) {
@@ -28,8 +28,8 @@ async function obtenerEspacioPorId(idEspacio) {
 async function verificarReserva(fecha, horaInicio, duracion, idUsuario, idEspacio) {
     try {
         // Obtener información del usuario y del espacio
-        const usuario = await MiModelo.findById(idUsuario);
-        const espacio = await MiModelo.findById(idEspacio);
+        const usuario = await MiModelo.find({ id: idUsuario });
+        const espacio = await MiModelo.find({ id: idEspacio });
 
         // Verificar si el usuario y el espacio existen
         if (!usuario || !espacio) {
@@ -83,7 +83,6 @@ async function verificarReserva(fecha, horaInicio, duracion, idUsuario, idEspaci
         throw error;
     }
 }
-
 
 
 module.exports = {

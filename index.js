@@ -5,9 +5,8 @@ const morgan = require('morgan');
 const db = require('./modelos/index.js')
 const  cors =require('cors')
 const {agregarEspaciosDePrueba} = require('./pruebas.js')
-const {obtenerEspacioPorId,obtenerEspaciosReservables} = require('./reglas/gestorEspacios.js')
 
-const API_PORT = process.env.PORT || 8080
+const API_PORT = process.env.PORT || 3000
 //Configuraciones
 app.set('port',  API_PORT );
 app.set('json spaces', 2)
@@ -24,7 +23,13 @@ app.get('/', (req, res) => {
     return res.status(200).json({"Esta corriendo" : 'la api' })
 })
 //Routes
-app.use('/api',require('./rutas/index.js'));
+var spacesRouter = require("./rutas/espacios");
+var reserveRouter = require("./rutas/reservas");
+var usersRouter = require("./rutas/user");
+
+app.use("/api/users", usersRouter);
+app.use("/api/reserve", reserveRouter);
+app.use("/api/spaces", spacesRouter);
 
 
 // Modelo para el manejo de Sockets.
@@ -47,6 +52,3 @@ db.mongoose
 server.listen(app.get('port'),()=>{
     console.log(`Server listening on port ${app.get('port')}`);
 });
-
-obtenerEspacioPorId('663d0898332570e5549f2bc3');
-obtenerEspaciosReservables();
