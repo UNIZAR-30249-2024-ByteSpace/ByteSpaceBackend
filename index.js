@@ -2,9 +2,9 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const db = require('./modelos/index.js')
+var mongoose = require("mongoose");
 const  cors =require('cors')
-const {agregarEspaciosDePrueba} = require('./pruebas.js')
+//const {addSpacesFromCSV} = require('./addSpacesFromCSV.js')
 
 const API_PORT = process.env.PORT || 3000
 //Configuraciones
@@ -38,8 +38,8 @@ const Socket = require('./sockets/index');
 // Sockets: inicia una conexión socket.io en el servidor.
 Socket.start(server)
 
-db.mongoose
-    .connect(db.uri)
+mongoose
+    .connect('mongodb+srv://bytespace:oWhNJuKouGNocXLS@cluster0.gvk8lx8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => {
         console.log('Connected to the database')
     })
@@ -52,3 +52,5 @@ db.mongoose
 server.listen(app.get('port'),()=>{
     console.log(`Server listening on port ${app.get('port')}`);
 });
+
+//addSpacesFromCSV();

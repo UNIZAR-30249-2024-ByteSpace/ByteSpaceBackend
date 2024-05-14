@@ -30,8 +30,8 @@ async function obtenerEspacioPorId(idEspacio) {
 async function verificarReserva(fecha, horaInicio, duracion, idUsuario, idEspacio) {
     try {
         // Obtener información del usuario y del espacio
-        const usuario = await MiModelo.find({ id: idUsuario });
-        const espacio = await MiModelo.find({ id: idEspacio });
+        const usuario = await EspacioModelo.find({ id: idUsuario });
+        const espacio = await EspacioModelo.find({ id: idEspacio });
 
         // Verificar si el usuario y el espacio existen
         if (!usuario || !espacio) {
