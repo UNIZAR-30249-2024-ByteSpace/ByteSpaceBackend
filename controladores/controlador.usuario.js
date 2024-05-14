@@ -1,58 +1,56 @@
+const jwt = require('jsonwebtoken');
+const Usuario = require('../modelos/modelo.usuario'); // Asegúrate de ajustar la ruta al modelo de usuario
 
+// Función para validar el formato del email
+const validarEmail = (email) => {
+  return email.match(
+    /^(([^<>()\[\]\.,;:\s@"]+(.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};
 
-// función para iniciar sesión en el sistema
-async function iniciarSesion(req, res){
-	logger.info("user.controller:iniciar sesion");
-	try {
-		// comprobamos que el email introducido es válido
-		if(!validarEmail(req.body.email)){
-			logger.error("user.controller:formato de email no valido");
-			return res.status(400).send('Formato de email no válido.');
-		}
+// Función para iniciar sesión en el sistema
+async function iniciarSesion(req, res) {
+  try {
+    const { username, password } = req.body; // Cambiar a 'username'
 
-		// comprobamos si ya existe un usuario registrado con ese correo electrónico
-		const comprobarUsuario = await Usuario.findOne({
-			email: req.body.email,
-		});
-		if (comprobarUsuario) {
-			// gestionamos si el usuario está baneado
+    console.log('Datos recibidos:', { username, password });
 
-			if(comprobarUsuario.baneado){
-				logger.error("user.controller: el usuario esta baneado. No puede iniciar sesion");
-				res.status(403).send('El usuario está baneado. No puede iniciar sesión')
-			}
+    // Comprobamos que el email introducido es válido
+    if (!validarEmail(username)) { // Cambiar a 'username'
+      console.log('Formato de email no válido:', username);
+      return res.status(400).send('Formato de email no válido.');
+    }
 
-			// completamos la petición en caso de que la contraseña introducida coincida con la guardada
-			if(comprobarUsuario.password !== req.body.password){
-				logger.error("user.controller:El email o la contraseña no son correctas");
-				return res.status(400).send('El email o la contraseña no son correctas');
-			}
+    // Comprobamos si ya existe un usuario registrado con ese correo electrónico
+    const comprobarUsuario = await Usuario.findOne({ email: username }); // Cambiar a 'username'
 
+    if (!comprobarUsuario) {
+      console.log('Usuario no existente:', username);
+      return res.status(404).send('Usuario no existente');
+    }
 
-			else {
-				
-				const jwtToken = await jwt.sign({idUsuario: comprobarUsuario._id}, 'clavesecreta');
+    // Verificamos si la contraseña introducida coincide con la guardada
+    if (comprobarUsuario.password !== password) {
+      console.log('Contraseña incorrecta para el email:', username);
+      return res.status(400).send('El email o la contraseña no son correctas');
+    }
 
-				console.log(jwtToken)
+    // Generación del token JWT
+    const jwtToken = await jwt.sign({ idUsuario: comprobarUsuario.id }, 'clavesecreta', { expiresIn: '1h' });
 
-				return res.status(201).json({
-					name: comprobarUsuario.username,
-					email: comprobarUsuario.email,
-					token: jwtToken
-				});
-			}
-		}
-		else{
-			logger.error("user.controller:usuario no existente");
-			res.status(404).send('Usuario no existente');
-		}
-		
-	} catch (err) {
-		logger.error("user.controller:usuario no existente");
-    	res.status(404).send('Usuario no existente');
-	}
+    console.log('Token JWT generado:', jwtToken);
+
+    return res.status(200).json({
+      name: comprobarUsuario.username,
+      email: comprobarUsuario.email,
+      token: jwtToken,
+    });
+  } catch (err) {
+    console.error('Error al iniciar sesión:', err);
+    return res.status(500).send('Error interno del servidor');
+  }
 }
 
 module.exports = {
-    iniciarSesion
+  iniciarSesion,
 };
