@@ -3,18 +3,17 @@ const UserModel = require('../modelos/modelo.usuario');
 
     async function getReservasByUserId(req, res) {
         try {
-            const userEmail = req.params.email;
-
+            const userId = req.params.id;
             // Se busca el usuario en la base de datos por su correo electrónico
-            const usuario = await UserModel.findOne({ email: userEmail });
-
+            const usuario = await UserModel.findOne({ id: userId });
+            console.log("Usuario" + usuario);
             if (!usuario) {
                 return res.status(404).json({ message: 'Usuario no encontrado' });
             }
 
             // Se buscan las reservas asociadas al usuario
-            const reservas = await ReservaModel.find({ usuario: usuario._id });
-
+            const reservas = await ReservaModel.find({ idPersona: usuario.id });
+            console.log("reservas" + reservas);
             // Se envían las reservas al cliente
             return res.status(200).json(reservas);
         } catch (error) {
@@ -25,19 +24,21 @@ const UserModel = require('../modelos/modelo.usuario');
 
     async function cancelReserva(req, res) {
         try {
+            console.log("Entro al frontend ");
+            console.log("req.params.id: " + req.params.id);
             const reservaId = req.params.id;
 
             // Se busca la reserva en la base de datos
-            const reserva = await ReservaModel.findById(reservaId);
-
+            const reserva = await ReservaModel.findOne({ id: reservaId});
+            console.log("Reserva: " + reserva);
             if (!reserva) {
                 return res.status(404).json({ message: 'Reserva no encontrada' });
             }
 
             // Se elimina la reserva de la base de datos
-            await ReservaModel.findByIdAndDelete(reservaId);
-
-            return res.status(200).json({ message: 'Reserva cancelada correctamente' });
+            await ReservaModel.findOneAndDelete({ id: reservaId});
+            console.log("Devuelvo json");
+            return res.status(204).json({reserva});
         } catch (error) {
             console.error('Error al cancelar la reserva:', error);
             return res.status(500).json({ message: 'Error interno del servidor' });

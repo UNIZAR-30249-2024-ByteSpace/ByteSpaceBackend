@@ -10,7 +10,7 @@ const ReservaSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    duracion: {
+    horaFin: {
         type: Number,
         required: true
     },
@@ -19,12 +19,12 @@ const ReservaSchema = mongoose.Schema({
         required: true
     },
     idPersona: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Usuario',
         required: true
     },
     idEspacio: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Espacio',
         required: true
     },
