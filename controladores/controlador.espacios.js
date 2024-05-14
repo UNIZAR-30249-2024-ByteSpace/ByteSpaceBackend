@@ -2,17 +2,19 @@ const EspacioModelo = require('../modelos/modelo.espacio.js');
 const UserModelo = require('../modelos/modelo.usuario.js');
 const MiModelo = require('../index.js');
 
-async function obtenerEspaciosReservables() {
+async function obtenerEspaciosReservables(req, res) {
     try {
         // Buscar espacios reservables en la misma planta
+        console.log("ME LLAMAN DEL FRONT")
         const espacios = await EspacioModelo.find({ reservable: true });
         console.log(espacios)
-        return espacios;
+        res.status(200).json(espacios);
     } catch (error) {
         console.error('Error al obtener espacios reservables por planta:', error);
-        throw error;
+        res.status(500).json({ error: 'Error al obtener espacios reservables por planta' });
     }
 }
+
 
 async function obtenerEspacioPorId(idEspacio) {
     try {
