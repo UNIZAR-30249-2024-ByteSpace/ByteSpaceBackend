@@ -16,14 +16,24 @@ async function obtenerEspaciosReservables(req, res) {
 }
 
 
-async function obtenerEspacioPorId(idEspacio) {
+async function obtenerEspacioPorId(req, res) {
     try {
-        const espacio = await EspacioModelo.find({ id: idEspacio });
-        console.log(espacio)
-        return espacio;
+        console.log("ME LLAMAN DEL FRONT")
+        console.log("PARAMS", JSON.stringify(req.params));
+        const { id } = req.params;
+        console.log("IDESPACIO" + id);
+
+        const espacio = await EspacioModelo.findById(id);
+
+        if (!espacio) {
+            return res.status(404).json({ error: 'Espacio no encontrado' });
+        }
+
+        console.log(espacio);
+        res.status(200).json(espacio);
     } catch (error) {
         console.error('Error al obtener el espacio:', error);
-        throw error;
+        res.status(500).json({ error: 'Error al obtener el espacio' });
     }
 }
 

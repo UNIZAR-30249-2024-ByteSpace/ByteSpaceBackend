@@ -7,6 +7,6 @@ router.get("/", ctrlEspacios.obtenerEspaciosReservables);
 
 router.get("/:id/reserve", ctrlEspacios.verificarReserva);
 
-router.post("/:id", ctrlEspacios.obtenerEspacioPorId);
+router.get("/:id", ctrlEspacios.obtenerEspacioPorId);
 
 module.exports =  router;
