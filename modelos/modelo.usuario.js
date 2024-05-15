@@ -32,7 +32,7 @@ const UsusarioEsquema = mongoose.Schema({
     },
     departamento: {
         type: String,
-        required: true,
+        //required: true,
     },
 })
 

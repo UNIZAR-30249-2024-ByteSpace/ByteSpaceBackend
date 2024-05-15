@@ -5,6 +5,6 @@ const ctrlReservas = require("../controladores/controlador.reservas");
 
 router.get("/:id", ctrlReservas.getReservasByUserId);
 
-router.get("/:id/cancel", ctrlReservas.cancelReserva);
+router.delete("/:id/cancel", ctrlReservas.cancelReserva);
 
 module.exports =  router;
