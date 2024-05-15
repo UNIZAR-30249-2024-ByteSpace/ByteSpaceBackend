@@ -5,7 +5,7 @@ const ctrlEspacios = require("../controladores/controlador.espacios");
 
 router.get("/", ctrlEspacios.obtenerEspaciosReservables);
 
-router.get("/:id/reserve", ctrlEspacios.verificarReserva);
+router.post("/:id/reserve", ctrlEspacios.crearReserva);
 
 router.get('/search', ctrlEspacios.filtrarEspacios);
 

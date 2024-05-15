@@ -22,6 +22,18 @@ const UserModel = require('../modelos/modelo.usuario');
         }
     }
 
+    async function getReservasAdmin(req, res) {
+        try {
+            const reservas = await ReservaModel.find();
+            console.log("reservas" + reservas);
+            // Se envían las reservas al cliente
+            return res.status(200).json(reservas);
+        } catch (error) {
+            console.error('Error al obtener las reservas del admin:', error);
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
     async function cancelReserva(req, res) {
         try {
             console.log("Entro al frontend ");
@@ -47,6 +59,6 @@ const UserModel = require('../modelos/modelo.usuario');
 
 module.exports = {
     getReservasByUserId,
-    cancelReserva
-    
+    cancelReserva,
+    getReservasAdmin
 };

@@ -1,4 +1,4 @@
-const EspacioModelo = require('./modelos/modelo.espacio.js');
+const ReservaModelo = require('./modelos/modelo.reserva.js');
 const UserModelo = require('./modelos/modelo.usuario.js');
 
   
@@ -6,35 +6,103 @@ const UserModelo = require('./modelos/modelo.usuario.js');
 async function agregarEspaciosDePrueba() {
     try {
         // Crear espacios de prueba
-        const espacio1 = new EspacioModelo({
-            id: 'espacio1',
-            tamanio: 50,
-            tipo: 'sala comun',
-            maxOcupantes: 20,
-            informacion: 'Espacio de prueba 1',
-            reservable: true,
-            categoria: 'categoria1',
-            porcentajeOcupacion: 0,
-            planta: 1,
-            asignadoA: ''
-        });
-
-        const espacio2 = new EspacioModelo({
-            id: 'espacio2',
-            tamanio: 100,
-            tipo: 'despacho',
-            maxOcupantes: 1,
-            informacion: 'Espacio de prueba 2',
-            reservable: true,
-            categoria: 'categoria2',
-            porcentajeOcupacion: 0,
-            planta: 1,
-            asignadoA: 'usuario1'
-        });
-
-        // Guardar espacios en la base de datos
-        await espacio1.save();
-        await espacio2.save();
+        const reservas = [
+            {
+                id: 'reserva1',
+                horaInicio: 10,
+                horaFin: 11,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: false
+            },
+            {
+                id: 'reserva2',
+                horaInicio: 11,
+                horaFin: 12,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: true
+            },
+            {
+                id: 'reserva3',
+                horaInicio: 12,
+                horaFin: 13,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: false
+            },
+            {
+                id: 'reserva4',
+                horaInicio: 13,
+                horaFin: 14,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: true
+            },
+            {
+                id: 'reserva5',
+                horaInicio: 14,
+                horaFin: 15,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: false
+            },
+            {
+                id: 'reserva6',
+                horaInicio: 15,
+                horaFin: 16,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: true
+            },
+            {
+                id: 'reserva7',
+                horaInicio: 16,
+                horaFin: 17,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: false
+            },
+            {
+                id: 'reserva8',
+                horaInicio: 17,
+                horaFin: 18,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: true
+            },
+            {
+                id: 'reserva9',
+                horaInicio: 18,
+                horaFin: 19,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: false
+            },
+            {
+                id: 'reserva10',
+                horaInicio: 19,
+                horaFin: 20,
+                fecha: new Date(2024, 4, 15),
+                idPersona: 'usuario1',
+                idEspacio: 'espacio2',
+                potencialInvalida: true
+            }
+        ];
+    
+        for (let reservaData of reservas) {
+            const reserva = new ReservaModelo(reservaData);
+            await reserva.save();
+        }
 
         console.log('Espacios de prueba añadidos correctamente.');
     } catch (error) {

@@ -1,4 +1,3 @@
-
 const db = require( '../modelos/index.js')
 const UserModel = require( '../modelos/modelos.usuario.js')
 const bcrypt = require( 'bcrypt')
