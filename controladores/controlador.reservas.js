@@ -6,7 +6,7 @@ const UserModel = require('../modelos/modelo.usuario');
             const userId = req.params.id;
             // Se busca el usuario en la base de datos por su correo electrónico
             const usuario = await UserModel.findOne({ id: userId });
-            console.log("Usuario" + usuario);
+            console.log("Usuario: " + usuario);
             if (!usuario) {
                 return res.status(404).json({ message: 'Usuario no encontrado' });
             }

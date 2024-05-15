@@ -37,6 +37,40 @@ async function obtenerEspacioPorId(req, res) {
     }
 }
 
+async function filtrarEspacios(req, res) {
+    try {
+        console.log("ME LLAMAN DEL FRONT");
+        console.log("QUERY", JSON.stringify(req.query));
+
+        const { categoria, planta, capacidad, tamanio } = req.query;
+        console.log(`Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}, Tamanio: ${tamanio}`);
+
+        const query = {};
+
+        if (categoria !== undefined) {
+            query.categoria = categoria;
+        }
+        if (planta !== undefined) {
+            query.planta = parseInt(planta, 10);
+        }
+        if (capacidad !== undefined) {
+            query.maxOcupantes = { $gt: parseInt(capacidad, 10) };
+        }
+        if (tamanio !== undefined) {
+            query.tamanio = { $gt: parseInt(tamanio, 10) };
+        }
+
+        const espaciosFiltrados = await EspacioModelo.find(query);
+
+        //console.log(espaciosFiltrados);
+        res.status(200).json(espaciosFiltrados);
+        console.log(`Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}, Tamanio: ${tamanio}`);
+    } catch (error) {
+        console.error('Error al filtrar los espacios:', error);
+        res.status(500).json({ error: 'Error al filtrar los espacios' });
+    }
+}
+
 async function verificarReserva(fecha, horaInicio, duracion, idUsuario, idEspacio) {
     try {
         // Obtener información del usuario y del espacio
@@ -100,6 +134,7 @@ async function verificarReserva(fecha, horaInicio, duracion, idUsuario, idEspaci
 module.exports = {
     obtenerEspacioPorId,
     obtenerEspaciosReservables,
+    filtrarEspacios,
     verificarReserva
 };
 

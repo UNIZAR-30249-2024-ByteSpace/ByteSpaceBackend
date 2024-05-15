@@ -7,6 +7,8 @@ router.get("/", ctrlEspacios.obtenerEspaciosReservables);
 
 router.get("/:id/reserve", ctrlEspacios.verificarReserva);
 
+router.get('/search', ctrlEspacios.filtrarEspacios);
+
 router.get("/:id", ctrlEspacios.obtenerEspacioPorId);
 
 module.exports =  router;
