@@ -74,10 +74,10 @@ async function filtrarEspacios(req, res) {
 async function crearReserva(req, res) {
     try {
         console.log("Entro crearReserva");
-        const { idUsuario, fecha, horaInicio, duracion } = req.body;
+        const { idUsuario, fecha, horaInicio, horaFin } = req.body;
         const { id } = req.params;
         const usuario = await UsuarioModelo.findOne({ id: idUsuario });
-        const espacio = await EspacioModelo.findById(id);
+        const espacio = await EspacioModelo.findOne({ id: id });
         console.log("Usuario: " + usuario)
         console.log("Espacio: " + espacio)
         if (!usuario || !espacio) {
@@ -86,45 +86,45 @@ async function crearReserva(req, res) {
         }
 
         const fechaInicio = new Date(fecha);
-        const horaFinal = new Date(fechaInicio.getTime() + duracion * 60000);
+;
         const reservas = await ReservaModelo.find({
             idEspacio: id,
             fecha: fechaInicio,
-            horaInicio: { $lt: horaFinal },
+            horaInicio: { $lt: horaFin },
             horaFin: { $gt: horaInicio }
         });
 
         if (reservas.length > 0) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
             res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya esta reservado' });
             return;
         }
 
         if  (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
             res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio no es común' });
             return;
         }
 
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
         }
 
         if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar despachos' });
             return;
         }
 
         if (usuario.rol === 'tecnico de laboratorio' && (espacio.categoria !== 'sala comun' && espacio.categoria !== 'laboratorio' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
         }
 
-        await guardarReservaValida(idUsuario, id, fechaInicio, horaInicio, horaFinal);
+        await guardarReservaValida(idUsuario, id, fechaInicio, horaInicio, horaFin);
         res.status(200).json({ message: 'Reserva creada con éxito' });
     } catch (error) {
         console.error('Error al crear la reserva:', error);
@@ -132,11 +132,11 @@ async function crearReserva(req, res) {
     }
 }
 
-async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFinal) {
+async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin) {
     const nuevaReserva = new ReservaModelo({
         id: generarIdUnico(),
         horaInicio: horaInicio,
-        horaFin: horaFinal,
+        horaFin: horaFin,
         fecha: fechaInicio,
         idPersona: idUsuario,
         idEspacio: idEspacio,
@@ -145,11 +145,11 @@ async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaI
     await nuevaReserva.save();
 }
 
-async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFinal) {
+async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin) {
     const nuevaReserva = new ReservaModelo({
         id: generarIdUnico(),
         horaInicio: horaInicio,
-        horaFin: horaFinal,
+        horaFin: horaFin,
         fecha: fechaInicio,
         idPersona: idUsuario,
         idEspacio: idEspacio,
