@@ -41,10 +41,12 @@ async function iniciarSesion(req, res) {
     console.log('Token JWT generado:', jwtToken);
 
     return res.status(200).json({
-      name: comprobarUsuario.username,
+      username: comprobarUsuario.username,
       email: comprobarUsuario.email,
+      id: comprobarUsuario.id,
       token: jwtToken,
     });
+    
   } catch (err) {
     console.error('Error al iniciar sesión:', err);
     return res.status(500).send('Error interno del servidor');
