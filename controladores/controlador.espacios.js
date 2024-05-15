@@ -91,7 +91,8 @@ async function crearReserva(req, res) {
             idEspacio: id,
             fecha: fechaInicio,
             horaInicio: { $lt: horaFin },
-            horaFin: { $gt: horaInicio }
+            horaFin: { $gt: horaInicio },
+            potencialInvalida: false
         });
 
         if (reservas.length > 0) {
