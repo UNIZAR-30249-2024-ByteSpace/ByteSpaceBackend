@@ -9,4 +9,6 @@ router.get("/:id", ctrlReservas.getReservasByUserId);
 
 router.delete("/:id/cancel", ctrlReservas.cancelReserva);
 
+router.post("/:id/accept", ctrlReservas.acceptReserva);
+
 module.exports =  router;

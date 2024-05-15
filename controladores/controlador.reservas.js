@@ -57,8 +57,34 @@ const UserModel = require('../modelos/modelo.usuario');
         }
     }
 
+    async function acceptReserva(req, res) {
+        try {
+            console.log("Entro al frontend ");
+            console.log("req.params.id: " + req.params.id);
+            const reservaId = req.params.id;
+    
+            // Se busca la reserva en la base de datos
+            const reserva = await ReservaModel.findOne({ id: reservaId });
+            console.log("Reserva: " + reserva);
+            if (!reserva) {
+                return res.status(404).json({ message: 'Reserva no encontrada' });
+            }
+    
+            // Se actualiza el atributo potencialInvalida a false
+            await ReservaModel.findOneAndUpdate({ id: reservaId }, { potencialInvalida: false });
+            console.log("Acepté la reserva");
+            
+            // Se devuelve la reserva actualizada
+            return res.status(200).json({ message: 'Reserva aceptada', reserva });
+        } catch (error) {
+            console.error('Error al aceptar la reserva:', error);
+            return res.status(500).json({ message: 'Error interno del servidor' });
+        }
+    }
+
 module.exports = {
     getReservasByUserId,
     cancelReserva,
+    acceptReserva,
     getReservasAdmin
 };
