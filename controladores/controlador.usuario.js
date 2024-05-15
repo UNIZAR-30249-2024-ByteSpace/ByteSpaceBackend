@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Usuario = require('../modelos/modelo.usuario'); // Asegúrate de ajustar la ruta al modelo de usuario
+const Usuario = require('../modelos/modelo.usuario');
 
 // Función para validar el formato del email
 const validarEmail = (email) => {
@@ -35,8 +35,12 @@ async function iniciarSesion(req, res) {
       return res.status(400).send('El email o la contraseña no son correctas');
     }
 
-    // Generación del token JWT
-    const jwtToken = await jwt.sign({ idUsuario: comprobarUsuario.id }, 'clavesecreta', { expiresIn: '1h' });
+    // Generación del token JWT con el ID y el correo electrónico del usuario en el payload
+    const jwtToken = await jwt.sign(
+      { idUsuario: comprobarUsuario.id, email: comprobarUsuario.email },
+      'clavesecreta',
+      { expiresIn: '1h' }
+    );
 
     console.log('Token JWT generado:', jwtToken);
 
@@ -44,6 +48,7 @@ async function iniciarSesion(req, res) {
       username: comprobarUsuario.username,
       email: comprobarUsuario.email,
       id: comprobarUsuario.id,
+      rol: comprobarUsuario.rol,
       token: jwtToken,
     });
     
