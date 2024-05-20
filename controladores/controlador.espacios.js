@@ -42,29 +42,29 @@ async function filtrarEspacios(req, res) {
         console.log("ME LLAMAN DEL FRONT");
         console.log("QUERY", JSON.stringify(req.query));
 
-        const { categoria, planta, capacidad, tamanio } = req.query;
-        console.log(`Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}, Tamanio: ${tamanio}`);
+        const { id, categoria, planta, capacidad } = req.query;
+        console.log(`ID: ${id}, Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}`);
 
         const query = {};
 
-        if (categoria !== undefined) {
-            query.categoria = categoria;
-        }
-        if (planta !== undefined) {
-            query.planta = parseInt(planta, 10);
-        }
-        if (capacidad !== undefined) {
-            query.maxOcupantes = { $gt: parseInt(capacidad, 10) };
-        }
-        if (tamanio !== undefined) {
-            query.tamanio = { $gt: parseInt(tamanio, 10) };
+        if (id !== '') {
+            query.id = id;
+        } else {
+            if (categoria !== undefined) {
+                query.categoria = categoria;
+            }
+            if (planta !== undefined) {
+                query.planta = parseInt(planta, 10);
+            }
+            if (capacidad !== undefined) {
+                query.maxOcupantes = { $gt: parseInt(capacidad, 10) };
+            }
         }
 
         const espaciosFiltrados = await EspacioModelo.find(query);
 
-        //console.log(espaciosFiltrados);
         res.status(200).json(espaciosFiltrados);
-        console.log(`Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}, Tamanio: ${tamanio}`);
+        console.log(`ID: ${id}, Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}`);
     } catch (error) {
         console.error('Error al filtrar los espacios:', error);
         res.status(500).json({ error: 'Error al filtrar los espacios' });
