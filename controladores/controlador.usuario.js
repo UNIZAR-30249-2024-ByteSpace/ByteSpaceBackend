@@ -49,6 +49,7 @@ async function iniciarSesion(req, res) {
       email: comprobarUsuario.email,
       id: comprobarUsuario.id,
       rol: comprobarUsuario.rol,
+      departamento: comprobarUsuario.departamento,
       token: jwtToken,
     });
     
