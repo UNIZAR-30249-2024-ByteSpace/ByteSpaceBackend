@@ -31,7 +31,11 @@ const ReservaSchema = mongoose.Schema({
     potencialInvalida: {
         type: Boolean,
         required: true
-    }
+    },
+    asistentes: {
+        type: Number,
+        required: true
+    },
 });
 
 const ReservaModelo = mongoose.model('Reserva', ReservaSchema);

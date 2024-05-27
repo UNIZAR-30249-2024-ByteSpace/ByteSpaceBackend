@@ -74,19 +74,25 @@ async function filtrarEspacios(req, res) {
 async function crearReserva(req, res) {
     try {
         console.log("Entro crearReserva");
-        const { idUsuario, fecha, horaInicio, horaFin } = req.body;
+        const { idUsuario, fecha, horaInicio, horaFin, asistentes } = req.body;
         const { id } = req.params;
         const usuario = await UsuarioModelo.findOne({ id: idUsuario });
         const espacio = await EspacioModelo.findOne({ id: id });
-        console.log("Usuario: " + usuario)
-        console.log("Espacio: " + espacio)
+        console.log("Usuario: " + usuario);
+        console.log("Espacio: " + espacio);
+
         if (!usuario || !espacio) {
             res.status(400).json({ error: 'Usuario o espacio no encontrado' });
             return;
         }
 
+        if (asistentes > espacio.maxOcupantes) {
+            res.status(400).json({ error: 'Reserva inválida: El número de asistentes excede la capacidad del espacio' });
+            return;
+        }
+
         const fechaInicio = new Date(fecha);
-;
+
         const reservas = await ReservaModelo.find({
             idEspacio: id,
             fecha: fechaInicio,
@@ -96,36 +102,39 @@ async function crearReserva(req, res) {
         });
 
         if (reservas.length > 0) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
-            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya esta reservado' });
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
+            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya está reservado' });
             return;
         }
 
-        if  (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
+        if (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio no es común' });
             return;
         }
 
-        if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
+        if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && 
+            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
         }
 
         if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar despachos' });
             return;
         }
 
-        if (usuario.rol === 'tecnico de laboratorio' && (espacio.categoria !== 'sala comun' && espacio.categoria !== 'laboratorio' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin);
+        if (usuario.rol === 'tecnico de laboratorio' && 
+            (espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio' || 
+            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
         }
 
-        await guardarReservaValida(idUsuario, id, fechaInicio, horaInicio, horaFin);
+        await guardarReservaValida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
         res.status(200).json({ message: 'Reserva creada con éxito' });
     } catch (error) {
         console.error('Error al crear la reserva:', error);
@@ -133,7 +142,7 @@ async function crearReserva(req, res) {
     }
 }
 
-async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin) {
+async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin, asistentes) {
     const nuevaReserva = new ReservaModelo({
         id: generarIdUnico(),
         horaInicio: horaInicio,
@@ -141,12 +150,13 @@ async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaI
         fecha: fechaInicio,
         idPersona: idUsuario,
         idEspacio: idEspacio,
-        potencialInvalida: true
+        potencialInvalida: true,
+        asistentes: asistentes
     });
     await nuevaReserva.save();
 }
 
-async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin) {
+async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInicio, horaFin, asistentes) {
     const nuevaReserva = new ReservaModelo({
         id: generarIdUnico(),
         horaInicio: horaInicio,
@@ -154,7 +164,8 @@ async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInici
         fecha: fechaInicio,
         idPersona: idUsuario,
         idEspacio: idEspacio,
-        potencialInvalida: false
+        potencialInvalida: false,
+        asistentes: asistentes
     });
     await nuevaReserva.save();
 }
