@@ -5,9 +5,7 @@ const UsuarioModelo = require('../modelos/modelo.usuario.js');
 async function obtenerEspaciosReservables(req, res) {
     try {
         // Buscar espacios reservables en la misma planta
-        console.log("ME LLAMAN DEL FRONT")
         const espacios = await EspacioModelo.find({ reservable: true });
-        console.log(espacios)
         res.status(200).json(espacios);
     } catch (error) {
         console.error('Error al obtener espacios reservables por planta:', error);
@@ -18,10 +16,7 @@ async function obtenerEspaciosReservables(req, res) {
 
 async function obtenerEspacioPorId(req, res) {
     try {
-        console.log("ME LLAMAN DEL FRONT")
-        console.log("PARAMS", JSON.stringify(req.params));
         const { id } = req.params;
-        console.log("IDESPACIO" + id);
 
         const espacio = await EspacioModelo.find({ id: id });
 
@@ -29,7 +24,6 @@ async function obtenerEspacioPorId(req, res) {
             return res.status(404).json({ error: 'Espacio no encontrado' });
         }
 
-        console.log(espacio);
         res.status(200).json(espacio);
     } catch (error) {
         console.error('Error al obtener el espacio:', error);
@@ -39,11 +33,8 @@ async function obtenerEspacioPorId(req, res) {
 
 async function filtrarEspacios(req, res) {
     try {
-        console.log("ME LLAMAN DEL FRONT");
-        console.log("QUERY", JSON.stringify(req.query));
 
         const { id, categoria, planta, capacidad } = req.query;
-        console.log(`ID: ${id}, Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}`);
 
         const query = {};
 
@@ -64,7 +55,6 @@ async function filtrarEspacios(req, res) {
         const espaciosFiltrados = await EspacioModelo.find(query);
 
         res.status(200).json(espaciosFiltrados);
-        console.log(`ID: ${id}, Categoria: ${categoria}, Planta: ${planta}, Capacidad: ${capacidad}`);
     } catch (error) {
         console.error('Error al filtrar los espacios:', error);
         res.status(500).json({ error: 'Error al filtrar los espacios' });
@@ -73,13 +63,11 @@ async function filtrarEspacios(req, res) {
 
 async function crearReserva(req, res) {
     try {
-        console.log("Entro crearReserva");
         const { idUsuario, fecha, horaInicio, horaFin, asistentes } = req.body;
         const { id } = req.params;
         const usuario = await UsuarioModelo.findOne({ id: idUsuario });
         const espacio = await EspacioModelo.findOne({ id: id });
-        console.log("Usuario: " + usuario);
-        console.log("Espacio: " + espacio);
+
 
         if (!usuario || !espacio) {
             res.status(400).json({ error: 'Usuario o espacio no encontrado' });
@@ -178,7 +166,6 @@ function generarIdUnico() {
 
 async function actualizarEspacio(req, res) {
     try {
-        console.log("ME LLAMAN DEL FRONT PARA ACTUALIZAR");
         const { id, ...updatedData } = req.body;
 
         // Encuentra el espacio existente por ID
@@ -201,7 +188,6 @@ async function actualizarEspacio(req, res) {
         // Guarda el espacio actualizado
         const updatedEspacio = await existingEspacio.save();
 
-        console.log(updatedEspacio);
         res.status(200).json(updatedEspacio);
     } catch (error) {
         console.error('Error al actualizar el espacio:', error);
