@@ -27,7 +27,7 @@ cron.schedule('00 00 * * *', async () => {
     const reservasPotencialmenteInvalidas = reservas.filter(reserva => {
         const fechaReserva = new Date(reserva.fecha);
         const diferenciaEnDiasDesdeTimestamp = Math.ceil((fechaActual - new Date(reserva.timestamp)) / (1000 * 60 * 60 * 24));
-        return (fechaReserva <= fechaActual || diferenciaEnDiasDesdeTimestamp > 7);
+        return (fechaReserva < fechaActual || diferenciaEnDiasDesdeTimestamp > 7);
     });
 
     // Contador de reservas eliminadas
