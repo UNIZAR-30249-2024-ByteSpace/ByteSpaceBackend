@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 var spacesRouter = require("./rutas/espacios");
 var reserveRouter = require("./rutas/reservas");
 var usersRouter = require("./rutas/user");
+require('./reservasCron');
 app.use("/api/users", usersRouter);
 app.use("/api/reserve", reserveRouter);
 app.use("/api/spaces", spacesRouter);

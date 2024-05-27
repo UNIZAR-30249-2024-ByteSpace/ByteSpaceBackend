@@ -13,11 +13,9 @@ async function iniciarSesion(req, res) {
   try {
     const { username, password } = req.body; // Cambiar a 'username'
 
-    console.log('Datos recibidos:', { username, password });
 
     // Comprobamos que el email introducido es válido
     if (!validarEmail(username)) { // Cambiar a 'username'
-      console.log('Formato de email no válido:', username);
       return res.status(400).send('Formato de email no válido.');
     }
 
@@ -25,13 +23,11 @@ async function iniciarSesion(req, res) {
     const comprobarUsuario = await Usuario.findOne({ email: username }); // Cambiar a 'username'
 
     if (!comprobarUsuario) {
-      console.log('Usuario no existente:', username);
       return res.status(404).send('Usuario no existente');
     }
 
     // Verificamos si la contraseña introducida coincide con la guardada
     if (comprobarUsuario.password !== password) {
-      console.log('Contraseña incorrecta para el email:', username);
       return res.status(400).send('El email o la contraseña no son correctas');
     }
 
@@ -42,7 +38,6 @@ async function iniciarSesion(req, res) {
       { expiresIn: '1h' }
     );
 
-    console.log('Token JWT generado:', jwtToken);
 
     return res.status(200).json({
       username: comprobarUsuario.username,
@@ -66,11 +61,9 @@ async function cambiarRol(req, res) {
   try {
     const { email, nuevoRol, nuevoDepartamento } = req.body;
 
-    console.log('Datos recibidos para cambiar rol:', { email, nuevoRol, nuevoDepartamento });
 
     // Comprobamos que el email introducido es válido
     if (!validarEmail(email)) {
-      console.log('Formato de email no válido:', email);
       return res.status(400).send('Formato de email no válido.');
     }
 
@@ -78,7 +71,6 @@ async function cambiarRol(req, res) {
     const usuario = await Usuario.findOne({ email });
 
     if (!usuario) {
-      console.log('Usuario no existente:', email);
       return res.status(404).send('Usuario no existente');
     }
 
@@ -86,24 +78,19 @@ async function cambiarRol(req, res) {
     if (['estudiante', 'conserje', 'gerente'].includes(nuevoRol)) {
       usuario.rol = nuevoRol;
       usuario.departamento = undefined;
-      console.log(`Departamento eliminado para el rol: ${nuevoRol}`);
     } else if (nuevoDepartamento !== undefined) {
       // Verificamos que el nuevo departamento sea válido
       if (nuevoDepartamento !== 'informatica' && nuevoDepartamento !== 'ingenieria de sistemas') {
-        console.log('Departamento inválido:', nuevoDepartamento);
         return res.status(400).send('El nuevo departamento es invalido.');
       }
       usuario.rol = nuevoRol;
       usuario.departamento = nuevoDepartamento;
-      console.log(`Departamento actualizado a: ${nuevoDepartamento} para el rol: ${nuevoRol}`);
     } else {
-      console.log('Nuevo rol requiere de un nuevo departamento:', { email, nuevoRol });
       return res.status(400).send('Este cambio de rol requiere de un nuevo departamento.');
     }
 
     await usuario.save();
 
-    console.log('Rol y departamento actualizados para el usuario:', { email, nuevoRol, nuevoDepartamento });
 
     return res.status(200).json({
       message: 'Rol y departamento actualizados con éxito',

@@ -151,7 +151,8 @@ async function guardarReservaPotencialmenteInvalida(idUsuario, idEspacio, fechaI
         idPersona: idUsuario,
         idEspacio: idEspacio,
         potencialInvalida: true,
-        asistentes: asistentes
+        asistentes: asistentes,
+        timestamp: Date.now() 
     });
     await nuevaReserva.save();
 }
@@ -165,7 +166,8 @@ async function guardarReservaValida(idUsuario, idEspacio, fechaInicio, horaInici
         idPersona: idUsuario,
         idEspacio: idEspacio,
         potencialInvalida: false,
-        asistentes: asistentes
+        asistentes: asistentes,
+        timestamp: Date.now()
     });
     await nuevaReserva.save();
 }
