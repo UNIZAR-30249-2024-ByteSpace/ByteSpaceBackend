@@ -113,7 +113,7 @@ async function crearReserva(req, res) {
         }
 
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && 
-            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
@@ -127,7 +127,7 @@ async function crearReserva(req, res) {
 
         if (usuario.rol === 'tecnico de laboratorio' && 
             (espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio' || 
-            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
