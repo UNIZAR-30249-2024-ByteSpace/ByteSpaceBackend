@@ -90,8 +90,7 @@ async function crearReserva(req, res) {
         });
 
         if (reservas.length > 0) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
-            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya está reservado' });
+            res.status(400).json({ error: 'El espacio ya está reservado para el periodo solicitado' });
             return;
         }
 
@@ -102,7 +101,7 @@ async function crearReserva(req, res) {
         }
 
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && 
-            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
@@ -116,7 +115,7 @@ async function crearReserva(req, res) {
 
         if (usuario.rol === 'tecnico de laboratorio' && 
             (espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio' || 
-            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
@@ -188,6 +187,25 @@ async function actualizarEspacio(req, res) {
         // Guarda el espacio actualizado
         const updatedEspacio = await existingEspacio.save();
 
+        // Verifica si el porcentajeOcupacion ha sido modificado
+        if (updatedData.hasOwnProperty('porcentajeOcupacion')) {
+            const maxCapacity = existingEspacio.tamanio * (updatedEspacio.porcentajeOcupacion / 100);
+            console.log(`Max capacity recalculated to: ${maxCapacity}`);
+
+            // Encuentra todas las reservas para este espacio
+            const reservas = await ReservaModelo.find({ idEspacio: id });
+
+            // Marca las reservas como potencialmente inválidas si asistentes > maxCapacity
+            reservas.forEach(async (reserva) => {
+                if (reserva.asistentes > maxCapacity) {
+                    reserva.potencialInvalida = true;
+                    await reserva.save();
+                    console.log(`Reserva ${reserva.id} marcada como potencialmente inválida.`);
+                }
+            });
+        }
+
+        console.log(updatedEspacio);
         res.status(200).json(updatedEspacio);
     } catch (error) {
         console.error('Error al actualizar el espacio:', error);
