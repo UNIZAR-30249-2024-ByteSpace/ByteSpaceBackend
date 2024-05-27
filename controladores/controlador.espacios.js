@@ -102,8 +102,7 @@ async function crearReserva(req, res) {
         });
 
         if (reservas.length > 0) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
-            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya está reservado' });
+            res.status(400).json({ error: 'El espacio ya está reservado para el periodo solicitado' });
             return;
         }
 
