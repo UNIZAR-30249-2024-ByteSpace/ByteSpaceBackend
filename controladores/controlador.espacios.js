@@ -199,6 +199,24 @@ async function actualizarEspacio(req, res) {
         // Guarda el espacio actualizado
         const updatedEspacio = await existingEspacio.save();
 
+        // Verifica si el porcentajeOcupacion ha sido modificado
+        if (updatedData.hasOwnProperty('porcentajeOcupacion')) {
+            const maxCapacity = existingEspacio.tamanio * (updatedEspacio.porcentajeOcupacion / 100);
+            console.log(`Max capacity recalculated to: ${maxCapacity}`);
+
+            // Encuentra todas las reservas para este espacio
+            const reservas = await ReservaModelo.find({ idEspacio: id });
+
+            // Marca las reservas como potencialmente inválidas si asistentes > maxCapacity
+            reservas.forEach(async (reserva) => {
+                if (reserva.asistentes > maxCapacity) {
+                    reserva.potencialInvalida = true;
+                    await reserva.save();
+                    console.log(`Reserva ${reserva.id} marcada como potencialmente inválida.`);
+                }
+            });
+        }
+
         console.log(updatedEspacio);
         res.status(200).json(updatedEspacio);
     } catch (error) {
