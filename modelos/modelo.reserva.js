@@ -36,6 +36,10 @@ const ReservaSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    timestamp: {
+        type: Date,
+        required: true
+    },
 });
 
 const ReservaModelo = mongoose.model('Reserva', ReservaSchema);
