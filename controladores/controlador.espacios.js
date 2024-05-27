@@ -174,11 +174,45 @@ function generarIdUnico() {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
+async function actualizarEspacio(req, res) {
+    try {
+        console.log("ME LLAMAN DEL FRONT PARA ACTUALIZAR");
+        const { id, ...updatedData } = req.body;
+
+        // Encuentra el espacio existente por ID
+        const existingEspacio = await EspacioModelo.findOne({ id: id });
+
+        if (!existingEspacio) {
+            return res.status(404).json({ error: 'Espacio no encontrado' });
+        }
+
+        // Lista de campos que se pueden actualizar
+        const updatableFields = ['reservable', 'categoria', 'asignadoA', 'porcentajeOcupacion'];
+
+        // Actualiza solo las claves especificadas si existen en el cuerpo de la solicitud
+        updatableFields.forEach(key => {
+            if (updatedData.hasOwnProperty(key)) {
+                existingEspacio[key] = updatedData[key];
+            }
+        });
+
+        // Guarda el espacio actualizado
+        const updatedEspacio = await existingEspacio.save();
+
+        console.log(updatedEspacio);
+        res.status(200).json(updatedEspacio);
+    } catch (error) {
+        console.error('Error al actualizar el espacio:', error);
+        res.status(500).json({ error: 'Error al actualizar el espacio' });
+    }
+}
+
 
 module.exports = {
     obtenerEspacioPorId,
     obtenerEspaciosReservables,
     filtrarEspacios,
-    crearReserva
+    crearReserva,
+    actualizarEspacio
 };
 
