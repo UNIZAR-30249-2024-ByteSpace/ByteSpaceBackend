@@ -74,7 +74,7 @@ async function crearReserva(req, res) {
             return;
         }
 
-        if (asistentes > espacio.maxOcupantes) {
+        if (asistentes > espacio.maxOcupantes * (espacio.porcentajeOcupacion / 100)) {
             res.status(400).json({ error: 'Reserva inválida: El número de asistentes excede la capacidad del espacio' });
             return;
         }
