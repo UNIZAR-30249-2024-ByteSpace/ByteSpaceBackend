@@ -11,4 +11,6 @@ router.get('/search', ctrlEspacios.filtrarEspacios);
 
 router.get("/:id", ctrlEspacios.obtenerEspacioPorId);
 
+router.post("/actualizarEspacio", ctrlEspacios.actualizarEspacio);
+
 module.exports =  router;

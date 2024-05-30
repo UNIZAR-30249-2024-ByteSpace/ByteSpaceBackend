@@ -17,7 +17,12 @@ async function obtenerEspaciosReservables(req, res) {
 async function obtenerEspacioPorId(req, res) {
     try {
         const { id } = req.params;
+<<<<<<< HEAD
         await ReservaModel.findOneAndDelete(reserva);
+=======
+
+        const espacio = await EspacioModelo.find({ id: id });
+>>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
 
         if (!espacio) {
             return res.status(404).json({ error: 'Espacio no encontrado' });
@@ -34,6 +39,10 @@ async function filtrarEspacios(req, res) {
     try {
 
         const { id, categoria, planta, capacidad } = req.query;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
         const query = {};
 
         if (id !== '') {
@@ -65,13 +74,17 @@ async function crearReserva(req, res) {
         const { id } = req.params;
         const usuario = await UsuarioModelo.findOne({ id: idUsuario });
         const espacio = await EspacioModelo.findOne({ id: id });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
 
         if (!usuario || !espacio) {
             res.status(400).json({ error: 'Usuario o espacio no encontrado' });
             return;
         }
 
-        if (asistentes > espacio.maxOcupantes) {
+        if (asistentes > espacio.maxOcupantes * (espacio.porcentajeOcupacion / 100)) {
             res.status(400).json({ error: 'Reserva inválida: El número de asistentes excede la capacidad del espacio' });
             return;
         }
@@ -87,8 +100,7 @@ async function crearReserva(req, res) {
         });
 
         if (reservas.length > 0) {
-            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
-            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio ya está reservado' });
+            res.status(400).json({ error: 'El espacio ya está reservado para el periodo solicitado' });
             return;
         }
 
@@ -99,7 +111,7 @@ async function crearReserva(req, res) {
         }
 
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') && 
-            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
@@ -113,7 +125,7 @@ async function crearReserva(req, res) {
 
         if (usuario.rol === 'tecnico de laboratorio' && 
             (espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio' || 
-            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'eina'))) {
+            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
             await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);
             res.status(200).json({ message: 'Reserva potencialmente inválida: No tiene permiso para reservar este espacio' });
             return;
@@ -161,11 +173,62 @@ function generarIdUnico() {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
 
+async function actualizarEspacio(req, res) {
+    try {
+        const { id, ...updatedData } = req.body;
+
+        // Encuentra el espacio existente por ID
+        const existingEspacio = await EspacioModelo.findOne({ id: id });
+
+        if (!existingEspacio) {
+            return res.status(404).json({ error: 'Espacio no encontrado' });
+        }
+
+        // Lista de campos que se pueden actualizar
+        const updatableFields = ['reservable', 'categoria', 'asignadoA', 'porcentajeOcupacion'];
+
+        // Actualiza solo las claves especificadas si existen en el cuerpo de la solicitud
+        updatableFields.forEach(key => {
+            if (updatedData.hasOwnProperty(key)) {
+                existingEspacio[key] = updatedData[key];
+            }
+        });
+
+        // Guarda el espacio actualizado
+        const updatedEspacio = await existingEspacio.save();
+
+        // Verifica si el porcentajeOcupacion ha sido modificado
+        if (updatedData.hasOwnProperty('porcentajeOcupacion')) {
+            const maxCapacity = existingEspacio.tamanio * (updatedEspacio.porcentajeOcupacion / 100);
+            console.log(`Max capacity recalculated to: ${maxCapacity}`);
+
+            // Encuentra todas las reservas para este espacio
+            const reservas = await ReservaModelo.find({ idEspacio: id });
+
+            // Marca las reservas como potencialmente inválidas si asistentes > maxCapacity
+            reservas.forEach(async (reserva) => {
+                if (reserva.asistentes > maxCapacity) {
+                    reserva.potencialInvalida = true;
+                    await reserva.save();
+                    console.log(`Reserva ${reserva.id} marcada como potencialmente inválida.`);
+                }
+            });
+        }
+
+        console.log(updatedEspacio);
+        res.status(200).json(updatedEspacio);
+    } catch (error) {
+        console.error('Error al actualizar el espacio:', error);
+        res.status(500).json({ error: 'Error al actualizar el espacio' });
+    }
+}
+
 
 module.exports = {
     obtenerEspacioPorId,
     obtenerEspaciosReservables,
     filtrarEspacios,
-    crearReserva
+    crearReserva,
+    actualizarEspacio
 };
 

@@ -27,7 +27,11 @@ app.get('/', (req, res) => {
 var spacesRouter = require("./rutas/espacios");
 var reserveRouter = require("./rutas/reservas");
 var usersRouter = require("./rutas/user");
+<<<<<<< HEAD
 //require('./reservasCron');
+=======
+require('./reservasCron');
+>>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
 app.use("/api/users", usersRouter);
 app.use("/api/reserve", reserveRouter);
 app.use("/api/spaces", spacesRouter);
