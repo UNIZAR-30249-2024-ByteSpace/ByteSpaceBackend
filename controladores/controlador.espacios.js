@@ -17,12 +17,8 @@ async function obtenerEspaciosReservables(req, res) {
 async function obtenerEspacioPorId(req, res) {
     try {
         const { id } = req.params;
-<<<<<<< HEAD
-        await ReservaModel.findOneAndDelete(reserva);
-=======
 
         const espacio = await EspacioModelo.find({ id: id });
->>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
 
         if (!espacio) {
             return res.status(404).json({ error: 'Espacio no encontrado' });
@@ -39,10 +35,6 @@ async function filtrarEspacios(req, res) {
     try {
 
         const { id, categoria, planta, capacidad } = req.query;
-<<<<<<< HEAD
-=======
-
->>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
         const query = {};
 
         if (id !== '') {
@@ -74,10 +66,6 @@ async function crearReserva(req, res) {
         const { id } = req.params;
         const usuario = await UsuarioModelo.findOne({ id: idUsuario });
         const espacio = await EspacioModelo.findOne({ id: id });
-<<<<<<< HEAD
-=======
-
->>>>>>> 87ce6d72916dda0974554a2490c354bcbfd80b6b
 
         if (!usuario || !espacio) {
             res.status(400).json({ error: 'Usuario o espacio no encontrado' });
