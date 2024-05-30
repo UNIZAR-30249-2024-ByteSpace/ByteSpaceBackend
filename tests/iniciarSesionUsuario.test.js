@@ -50,8 +50,8 @@ describe('Pruebas para la función iniciarSesion', () => {
   });
 
   it('debería devolver un mensaje de error si el email es inválido', async () => {
-    // Cambiar el email a uno inválido
-    req.body.username = 'correo-invalido';
+
+    req.body.username = 'email-invalido';
     await iniciarSesion(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalledWith('Formato de email no válido.');
@@ -59,6 +59,7 @@ describe('Pruebas para la función iniciarSesion', () => {
 
   it('debería devolver un mensaje de error si el usuario no existe', async () => {
     // Simular que el usuario no existe en la base de datos
+    req.body.username = 'mail@fakemail.es';
     UsuarioModel.findOne = jest.fn().mockResolvedValue(null);
     await iniciarSesion(req, res);
     expect(res.status).toHaveBeenCalledWith(404);
@@ -66,18 +67,60 @@ describe('Pruebas para la función iniciarSesion', () => {
   });
 
   it('debería devolver un mensaje de error si las credenciales son inválidas', async () => {
-    // Cambiar la contraseña para simular una contraseña incorrecta
+    // Simulate a scenario where the username is valid but the password is incorrect
+    req.body.username = 'usuario@example.com';
     req.body.password = 'contrasena-incorrecta';
+  
+    // Mocking the user data returned from the database
+    UsuarioModel.findOne = jest.fn().mockImplementation(({ email }) => {
+      if (email === 'usuario@example.com') {
+        // Mock user object with correct email but incorrect password
+        return {
+          id: 'usuario-id',
+          username: 'usuario',
+          email: 'usuario@example.com',
+          password: 'password123', // Actual correct password
+          rol: 'usuario',
+          departamento: 'departamento',
+        };
+      } else {
+        // Simulate user not found scenario
+        return null;
+      }
+    });
+  
     await iniciarSesion(req, res);
+    
+    // Expect a 400 status code with the correct error message
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalledWith('El email o la contraseña no son correctas');
   });
+  
 
   it('debería devolver un mensaje de error si ocurre un error interno del servidor', async () => {
-    // Simular un error interno del servidor
-    UsuarioModel.findOne = jest.fn().mockRejectedValue(new Error('Error interno del servidor'));
+    // Set a specific email for which the database query will throw an error
+    const errorEmail = 'usuario@example.com';
+    
+    // Mocking the user data returned from the database
+    UsuarioModel.findOne = jest.fn().mockImplementation(({ email }) => {
+      if (email === errorEmail) {
+        // Simulate an error when querying for this email
+        throw new Error('Error interno del servidor al buscar el usuario');
+      } else {
+        // Return null for other emails to simulate user not found scenario
+        return null;
+      }
+    });
+    
+    // Set a valid username for the test
+    req.body.username = 'usuario@example.com';
+    req.body.password = 'contrasena-incorrecta';
+  
     await iniciarSesion(req, res);
+  
+    // Expect a 500 status code with the correct error message
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalledWith('Error interno del servidor');
   });
+  
 });
