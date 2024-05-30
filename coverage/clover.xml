@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1717094859097" clover="3.2.0">
-  <project timestamp="1717094859097" name="All files">
-    <metrics statements="183" coveredstatements="72" conditionals="72" coveredconditionals="11" methods="18" coveredmethods="7" elements="273" coveredelements="90" complexity="0" loc="183" ncloc="183" packages="2" files="6" classes="6"/>
+<coverage generated="1717100647206" clover="3.2.0">
+  <project timestamp="1717100647206" name="All files">
+    <metrics statements="183" coveredstatements="94" conditionals="72" coveredconditionals="17" methods="18" coveredmethods="9" elements="273" coveredelements="120" complexity="0" loc="183" ncloc="183" packages="2" files="6" classes="6"/>
     <package name="controladores">
-      <metrics statements="169" coveredstatements="59" conditionals="72" coveredconditionals="11" methods="17" coveredmethods="7"/>
-      <file name="controlador.espacios.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/controladores/controlador.espacios.js">
-        <metrics statements="96" coveredstatements="9" conditionals="48" coveredconditionals="0" methods="10" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
+      <metrics statements="169" coveredstatements="81" conditionals="72" coveredconditionals="17" methods="17" coveredmethods="9"/>
+      <file name="controlador.espacios.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\controladores\controlador.espacios.js">
+        <metrics statements="96" coveredstatements="31" conditionals="48" coveredconditionals="6" methods="10" coveredmethods="3"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="23" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="23" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="24" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="40" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="43" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="54" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="40" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="43" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="46" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="49" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
         <line num="65" count="0" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
@@ -101,9 +101,9 @@
         <line num="207" count="0" type="stmt"/>
         <line num="209" count="0" type="stmt"/>
         <line num="210" count="0" type="stmt"/>
-        <line num="215" count="1" type="stmt"/>
+        <line num="215" count="3" type="stmt"/>
       </file>
-      <file name="controlador.reservas.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/controladores/controlador.reservas.js">
+      <file name="controlador.reservas.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\controladores\controlador.reservas.js">
         <metrics statements="35" coveredstatements="32" conditionals="6" coveredconditionals="5" methods="4" coveredmethods="4"/>
         <line num="1" count="4" type="stmt"/>
         <line num="2" count="4" type="stmt"/>
@@ -141,7 +141,7 @@
         <line num="70" count="0" type="stmt"/>
         <line num="74" count="4" type="stmt"/>
       </file>
-      <file name="controlador.usuario.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/controladores/controlador.usuario.js">
+      <file name="controlador.usuario.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\controladores\controlador.usuario.js">
         <metrics statements="38" coveredstatements="18" conditionals="18" coveredconditionals="6" methods="3" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -185,28 +185,28 @@
     </package>
     <package name="modelos">
       <metrics statements="14" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="modelo.espacio.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/modelos/modelo.espacio.js">
+      <file name="modelo.espacio.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\modelos\modelo.espacio.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="46" count="3" type="stmt"/>
       </file>
-      <file name="modelo.reserva.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/modelos/modelo.reserva.js">
+      <file name="modelo.reserva.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\modelos\modelo.reserva.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="5" type="stmt"/>
-        <line num="3" count="5" type="stmt"/>
-        <line num="45" count="5" type="stmt"/>
-        <line num="47" count="5" type="stmt"/>
+        <line num="1" count="7" type="stmt"/>
+        <line num="3" count="7" type="stmt"/>
+        <line num="45" count="7" type="stmt"/>
+        <line num="47" count="7" type="stmt"/>
       </file>
-      <file name="modelo.usuario.js" path="/mnt/c/Users/Juan/Desktop/Studies/Cuarto año/Lab Soft/github/ByteSpaceBackend/modelos/modelo.usuario.js">
+      <file name="modelo.usuario.js" path="C:\Users\jjrui\Desktop\ByteSpace_4\server\ByteSpaceBackend\modelos\modelo.usuario.js">
         <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="1" count="6" type="stmt"/>
-        <line num="4" count="6" type="stmt"/>
-        <line num="5" count="6" type="stmt"/>
+        <line num="1" count="8" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="5" count="8" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="40" count="6" type="stmt"/>
-        <line num="42" count="6" type="stmt"/>
+        <line num="40" count="8" type="stmt"/>
+        <line num="42" count="8" type="stmt"/>
       </file>
     </package>
   </project>
