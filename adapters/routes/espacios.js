@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
-const ctrlEspacios = require("../controladores/controlador.espacios");
+const ctrlEspacios = require("../controladores/espacios");
 
 router.get("/", ctrlEspacios.obtenerEspaciosReservables);
 

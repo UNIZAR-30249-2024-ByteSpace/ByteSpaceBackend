@@ -1,5 +1,5 @@
-const ReservaModel = require('../modelos/modelo.reserva');
-const UserModel = require('../modelos/modelo.usuario');
+const ReservaModel = require('../modelos/reserva');
+const UserModel = require('../modelos/usuario');
 
     async function getReservasByUserId(req, res) {
         try {

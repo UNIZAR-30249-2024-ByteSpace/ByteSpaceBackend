@@ -1,6 +1,6 @@
-const EspacioModelo = require('../modelos/modelo.espacio.js');
-const ReservaModelo = require('../modelos/modelo.reserva.js');
-const UsuarioModelo = require('../modelos/modelo.usuario.js');
+const EspacioModelo = require('../modelos/espacio.js');
+const ReservaModelo = require('../modelos/reserva.js');
+const UsuarioModelo = require('../modelos/usuario.js');
 
 async function obtenerEspaciosReservables(req, res) {
     try {
