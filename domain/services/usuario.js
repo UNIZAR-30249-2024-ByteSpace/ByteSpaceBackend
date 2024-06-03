@@ -1,57 +1,40 @@
-// servicios/usuarioService.js
-
-const jwt = require('jsonwebtoken');
-const UsuarioRepository = require('../repositories/usuario.js');
-const Email = require('../value_objects/email.js');
+// application/services/usuarioService.js
+const MongoUsuarioRepository = require('../../infrastructure/repositories/MongoUsuarioRepository'); // Importa el repositorio de MongoDB
+const Usuario = require('../../domain/entities/Usuario');
 
 class UsuarioService {
-  constructor() {
-    this.usuarioRepository = new UsuarioRepository();
-  }
-
-  async iniciarSesion(username, password) {
-    const email = new Email(username);
-    const usuario = await this.usuarioRepository.findByEmail(email.toString());
-
-    if (!usuario || usuario.password !== password) {
-      throw new Error('El email o la contraseña no son correctas');
+    constructor() {
+        this.usuarioRepository = new MongoUsuarioRepository(); // Utiliza el repositorio de MongoDB
     }
 
-    const token = jwt.sign(
-      { idUsuario: usuario.id, email: usuario.email },
-      'clavesecreta',
-      { expiresIn: '1h' }
-    );
+    async iniciarSesion(username, password) {
+        const usuario = await this.usuarioRepository.findByUsername(username);
 
-    return {
-      username: usuario.username,
-      email: usuario.email,
-      id: usuario.id,
-      rol: usuario.rol,
-      departamento: usuario.departamento,
-      token: token,
-    };
-  }
+        if (!usuario) {
+            return { error: 'Usuario no encontrado' };
+        }
 
-  async cambiarRol(email, nuevoRol, nuevoDepartamento) {
-    const usuario = await this.usuarioRepository.findByEmail(email);
+        if (usuario.password !== password) {
+            return { error: 'Contraseña incorrecta' };
+        }
 
-    if (!usuario) {
-      throw new Error('Usuario no existente');
+        return usuario;
     }
 
-    // Lógica para cambiar el rol y el departamento
-    // ...
+    async cambiarRol(email, nuevoRol, nuevoDepartamento) {
+        const usuario = await this.usuarioRepository.findByEmail(email);
 
-    await usuario.save();
+        if (!usuario) {
+            return { error: 'Usuario no encontrado' };
+        }
 
-    return {
-      message: 'Rol y departamento actualizados con éxito',
-      email: usuario.email,
-      nuevoRol: usuario.rol,
-      nuevoDepartamento: usuario.departamento,
-    };
-  }
+        usuario.rol = nuevoRol;
+        usuario.departamento = nuevoDepartamento || usuario.departamento;
+
+        await this.usuarioRepository.update(usuario);
+
+        return usuario;
+    }
 }
 
 module.exports = UsuarioService;

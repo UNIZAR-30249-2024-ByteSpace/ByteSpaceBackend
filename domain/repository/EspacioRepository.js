@@ -42,6 +42,15 @@ class EspacioRepository {
     async list() {
       throw new Error('Método no implementado');
     }
+
+    /**
+      * Obtiene todos los espacios reservables.
+      * @returns {Promise<Espacio[]>} - Una promesa que resuelve en un array de objetos Espacio.
+      */
+  async obtenerEspaciosReservables() {
+    throw new Error('Método no implementado');
+  }
+
   }
   
   module.exports = EspacioRepository;

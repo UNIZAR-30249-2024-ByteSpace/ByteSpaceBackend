@@ -48,6 +48,35 @@ class MongoReservaRepository extends ReservaRepository {
     const reservasDocs = await ReservaModelo.find();
     return reservasDocs.map(doc => doc.toObject());
   }
+
+
+  async getReservasByUserId(userId) {
+    const reservasDocs = await ReservaModelo.find({ idPersona: userId });
+    return reservasDocs.map(doc => doc.toObject());
+  }
+
+  async getReservasAdmin() {
+    const reservasDocs = await ReservaModelo.find();
+    return reservasDocs.map(doc => doc.toObject());
+  }
+
+  async cancelReserva(reservaId) {
+    return await ReservaModelo.findOneAndDelete({ id: reservaId });
+  }
+
+  async acceptReserva(reservaId) {
+    const reservaDoc = await ReservaModelo.findOne({ id: reservaId });
+
+    if (!reservaDoc) {
+      return { error: 'Reserva no encontrada' };
+    }
+
+    reservaDoc.potencialInvalida = false;
+    await reservaDoc.save();
+
+    return { reserva: reservaDoc.toObject() };
+  }
 }
+
 
 module.exports = MongoReservaRepository;

@@ -1,46 +1,38 @@
-// controlador.usuario.js
-
-const UsuarioService = require('../../application/services/usuario.js');
+const UsuarioService = require('../services/usuarioService');
 
 async function iniciarSesion(req, res) {
-  try {
-    const { username, password } = req.body;
+    try {
+        const { username, password } = req.body;
+        const usuario = await UsuarioService.iniciarSesion(username, password);
 
-    const usuarioService = new UsuarioService();
-    
-    // Invoca el servicio para iniciar sesión
-    const usuario = await usuarioService.iniciarSesion(username, password);
+        if (usuario.error) {
+            return res.status(401).json({ message: usuario.error });
+        }
 
-    // Devuelve el usuario como respuesta
-    return res.status(200).json(usuario);
-    
-  } catch (err) {
-    console.error('Error al iniciar sesión:', err);
-    // En caso de error, devuelve un mensaje genérico al cliente
-    return res.status(500).send('Error interno del servidor');
-  }
+        return res.status(200).json(usuario);
+    } catch (err) {
+        console.error('Error al iniciar sesión:', err);
+        return res.status(500).send('Error interno del servidor');
+    }
 }
 
 async function cambiarRol(req, res) {
-  try {
-    const { email, nuevoRol, nuevoDepartamento } = req.body;
+    try {
+        const { email, nuevoRol, nuevoDepartamento } = req.body;
+        const resultado = await UsuarioService.cambiarRol(email, nuevoRol, nuevoDepartamento);
 
-    const usuarioService = new UsuarioService();
-    
-    // Invoca el servicio para cambiar el rol
-    const resultado = await usuarioService.cambiarRol(email, nuevoRol, nuevoDepartamento);
+        if (resultado.error) {
+            return res.status(400).json({ message: resultado.error });
+        }
 
-    // Devuelve el resultado como respuesta
-    return res.status(200).json(resultado);
-    
-  } catch (err) {
-    console.error('Error al cambiar el rol:', err);
-    // En caso de error, devuelve un mensaje genérico al cliente
-    return res.status(500).send('Error interno del servidor');
-  }
+        return res.status(200).json(resultado);
+    } catch (err) {
+        console.error('Error al cambiar el rol:', err);
+        return res.status(500).send('Error interno del servidor');
+    }
 }
 
 module.exports = {
-  iniciarSesion,
-  cambiarRol,
+    iniciarSesion,
+    cambiarRol,
 };
