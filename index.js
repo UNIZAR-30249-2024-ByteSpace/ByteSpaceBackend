@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
     return res.status(200).json({"Esta corriendo" : 'la api' })
 })
 //Routes
-var spacesRouter = require("./rutas/espacios");
-var reserveRouter = require("./rutas/reservas");
-var usersRouter = require("./rutas/user");
+var spacesRouter = require("./Presentation/Routes/espacios");
+var reserveRouter = require("./Presentation/Routes/reservas");
+var usersRouter = require("./Presentation/Routes/user");
 require('./reservasCron');
 app.use("/api/users", usersRouter);
 app.use("/api/reserve", reserveRouter);
@@ -35,9 +35,6 @@ app.use("/api/spaces", spacesRouter);
 
 // Modelo para el manejo de Sockets.
 const server = require("http").Server(app);
-const Socket = require('./sockets/index');
-// Sockets: inicia una conexión socket.io en el servidor.
-Socket.start(server)
 
 mongoose
     .connect('mongodb+srv://bytespace:oWhNJuKouGNocXLS@cluster0.gvk8lx8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')

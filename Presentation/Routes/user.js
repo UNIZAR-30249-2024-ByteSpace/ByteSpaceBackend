@@ -3,7 +3,7 @@ var router = express.Router();
 
 //const Session = require('../controladores/controlador.sesion.js')
 
-const UsuarioController = require('../controladores/controlador.usuario.js')
+const UsuarioController = require('../Controllers/controlador.usuario.js')
 
 
 router.post('/login', UsuarioController.iniciarSesion)

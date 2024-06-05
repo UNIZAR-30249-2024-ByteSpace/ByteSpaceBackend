@@ -1,4 +1,4 @@
-const UsuarioService = require('../Domain/Service/ServicioUsuario');
+const UsuarioService = require('../../Domain/Service/ServicioUsuario');
 
 const services = new UsuarioService();
 
