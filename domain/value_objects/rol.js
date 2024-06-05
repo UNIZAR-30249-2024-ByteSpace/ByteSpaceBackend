@@ -2,7 +2,7 @@
 
 class Rol {
     constructor(nombre) {
-        const validRoles = ['estudiante', 'docente-investigador', 'investigador contratado', 'conserje', 'tecnico de laboratorio', 'gerente', 'gerente-docente-investigador']; // Agrega los roles válidos aquí
+        const validRoles = ['estudiante', 'docente-investigador', 'investigador contratado', 'conserje', 'técnico de laboratorio', 'gerente', 'gerente-docente-investigador'];
         if (!validRoles.includes(nombre)) {
             throw new Error(`Rol inválido: ${nombre}`);
         }

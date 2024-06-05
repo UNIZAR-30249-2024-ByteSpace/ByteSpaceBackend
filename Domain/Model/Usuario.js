@@ -8,9 +8,9 @@ class Usuario {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.rol = new Rol(rol);
+        this.rol = new Rol(rol).getNombre();
         // Si el departamento no se proporciona, se establece como null
-        this.departamento = departamento !== undefined ? new Departamento(departamento) : null;
+        this.departamento = departamento !== undefined ? new Departamento(departamento).getNombre() : null;
     }
 }
   
