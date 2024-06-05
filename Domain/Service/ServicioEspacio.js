@@ -16,7 +16,7 @@ class EspacioService {
     }
 
     async obtenerEspacioPorId(id) {
-        const espacioData = await this.espacioRepository.findById(id);
+        const espacioData = await this.espacioRepository.find({ id: id });
         if (!espacioData) {
             throw new Error('Espacio no encontrado');
         }

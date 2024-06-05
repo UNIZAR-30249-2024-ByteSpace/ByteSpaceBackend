@@ -72,6 +72,14 @@ class ReservaService {
         await this.reservaRepository.delete(id);
     }
 
+    async getReservasByUserId(userId) {
+        // Implementa la lógica para obtener las reservas de un usuario específico
+        // Puedes usar el método find del repositorio de reservas para buscar las reservas asociadas al userId
+        // Por ejemplo:
+        const reservas = await this.reservaRepository.find({ idPersona: userId });
+        return reservas;
+    }
+
     esReservaPotencialmenteInvalida(usuario, espacio) {
         if (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
             return true;
