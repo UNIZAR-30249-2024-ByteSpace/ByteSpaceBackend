@@ -52,7 +52,7 @@ class ReservaService {
         return nuevaReserva;
     }
 
-    async obtenerReservas() {
+    async getReservasAdmin() {
         return await this.reservaRepository.find({});
     }
 
