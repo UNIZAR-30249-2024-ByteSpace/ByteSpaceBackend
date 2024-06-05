@@ -25,11 +25,11 @@ class ReservaController {
         }
     }
 
-    cancelReserva = async (req, res) => {
+    cancel = async (req, res) => {
         console.log('Cancelar reserva controlador:', req.params.id);
         try {
             const reservaId = req.params.id;
-            const reserva = await reservaService.cancelReserva(reservaId);
+            const reserva = await reservaService.cancel(reservaId);
             return res.status(204).json(reserva);
         } catch (error) {
             console.error('Error al cancelar la reserva:', error.message);
@@ -37,11 +37,11 @@ class ReservaController {
         }
     }
 
-    acceptReserva = async (req, res) => {
+    accept = async (req, res) => {
         console.log('Aceptar reserva controlador:', req.params.id);
         try {
             const reservaId = req.params.id;
-            const reserva = await reservaService.acceptReserva(reservaId);
+            const reserva = await reservaService.accept(reservaId);
             return res.status(200).json({ message: 'Reserva aceptada', reserva });
         } catch (error) {
             console.error('Error al aceptar la reserva:', error.message);

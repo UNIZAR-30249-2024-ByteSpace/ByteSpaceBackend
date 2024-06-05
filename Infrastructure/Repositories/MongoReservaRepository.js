@@ -1,5 +1,5 @@
 // repositories/MongoReservaRepository.js
-const ReservaRepository = require('../../Domain/Repositories/ReservaRepository');
+const ReservaRepository = require('../../Domain/Repositories/ReservaRepository.js');
 const ReservaModelo = require('../../modelos/modelo.reserva.js');
 
 class MongoReservaRepository extends ReservaRepository {

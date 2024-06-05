@@ -7,9 +7,9 @@ router.get("/admin", reservaController.getReservasAdmin);
 
 router.get("/:id", reservaController.getReservasByUserId);
 
-router.delete("/:id/cancel", reservaController.cancelReserva);
+router.delete("/:id/cancel", reservaController.cancel);
 
-router.post("/:id/accept", reservaController.acceptReserva);
+router.post("/:id/accept", reservaController.accept);
 
 router.post("/:id/reserve", reservaController.crearReserva);
 

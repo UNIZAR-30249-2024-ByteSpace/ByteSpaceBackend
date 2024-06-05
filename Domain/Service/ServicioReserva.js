@@ -1,6 +1,6 @@
 // services/ReservaService.js
-const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository');
-const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository');
+const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
+const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 const UsuarioModelo = require('../../modelos/modelo.usuario.js');
 
 class ReservaService {
@@ -64,12 +64,21 @@ class ReservaService {
         return reserva;
     }
 
-    async cancelarReserva(id) {
+    async cancel(id) {
         const reserva = await this.obtenerReservaPorId(id);
         if (!reserva) {
             throw new Error('Reserva no encontrada');
         }
         await this.reservaRepository.delete(id);
+    }
+
+    async accept(id) {
+        const reserva = await this.obtenerReservaPorId(id);
+        if (!reserva) {
+            throw new Error('Reserva no encontrada');
+        }
+        reserva.potencialInvalida = false;
+        await this.reservaRepository.save(reserva); // Asumiendo que hay un método save para guardar la reserva
     }
 
     async getReservasByUserId(userId) {

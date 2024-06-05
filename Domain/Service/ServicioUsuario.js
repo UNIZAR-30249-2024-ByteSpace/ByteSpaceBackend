@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository'); // Asegúrate de tener este repositorio implementado
-const UsuarioRepository = require('../../Domain/Repositories/UsuarioRepository');
+const UsuarioRepository = require('../Repositories/UsuarioRepository');
 
 class UsuarioService {
     constructor(usuarioRepository = new MongoUsuarioRepository()) {

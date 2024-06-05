@@ -1,7 +1,7 @@
 // services/EspacioService.js
-const Espacio = require('../Model/Espacio');
-const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository');
-const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository');
+const Espacio = require('../Model/Espacio.js');
+const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
+const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 const UsuarioModelo = require('../../modelos/modelo.usuario.js');
 
 class EspacioService {
@@ -88,35 +88,21 @@ class EspacioService {
         return nuevaReserva;
     }
 
-    async actualizarEspacio(id, updatedData) {
-        const existingEspacio = await this.espacioRepository.findById(id);
-
+    async actualizarEspacio(updatedData) {
+        console.log("UPDATED DATA: " + updatedData);
+        console.log("ID: " + updatedData.id);
+        
+        const existingEspacio = await this.espacioRepository.update(
+            { id: updatedData.id }, // Filtro para encontrar el espacio por su id
+            updatedData, // Datos actualizados del espacio
+            { new: true } // Devolver el documento actualizado
+        );
+    
         if (!existingEspacio) {
             throw new Error('Espacio no encontrado');
         }
-
-        const updatableFields = ['reservable', 'categoria', 'asignadoA', 'porcentajeOcupacion'];
-        updatableFields.forEach(key => {
-            if (updatedData.hasOwnProperty(key)) {
-                existingEspacio[key] = updatedData[key];
-            }
-        });
-
-        const updatedEspacio = await this.espacioRepository.update(existingEspacio);
-
-        if (updatedData.hasOwnProperty('porcentajeOcupacion')) {
-            const maxCapacity = existingEspacio.tamanio * (updatedEspacio.porcentajeOcupacion / 100);
-
-            const reservas = await this.reservaRepository.find({ idEspacio: id });
-            reservas.forEach(async (reserva) => {
-                if (reserva.asistentes > maxCapacity) {
-                    reserva.potencialInvalida = true;
-                    await this.reservaRepository.update(reserva);
-                }
-            });
-        }
-
-        return new Espacio(updatedEspacio);
+    
+        return new Espacio(existingEspacio); // Devolver el espacio actualizado
     }
 
     esReservaPotencialmenteInvalida(usuario, espacio) {
