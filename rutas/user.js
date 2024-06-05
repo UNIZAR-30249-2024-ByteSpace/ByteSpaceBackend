@@ -5,10 +5,8 @@ var router = express.Router();
 
 const UsuarioController = require('../controladores/controlador.usuario.js')
 
-// Crear una instancia del controlador
-const usuarioController = new UsuarioController();
 
-router.post('/login', usuarioController.iniciarSesion)
-router.post('/cambiarRol', usuarioController.cambiarRol)
+router.post('/login', UsuarioController.iniciarSesion)
+router.post('/cambiarRol', UsuarioController.cambiarRol)
 
 module.exports =  router;

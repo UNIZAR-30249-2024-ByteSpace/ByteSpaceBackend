@@ -9,7 +9,8 @@ class Usuario {
         this.email = email;
         this.password = password;
         this.rol = new Rol(rol);
-        this.departamento = new Departamento(departamento);
+        // Si el departamento no se proporciona, se establece como null
+        this.departamento = departamento !== undefined ? new Departamento(departamento) : null;
     }
 }
   

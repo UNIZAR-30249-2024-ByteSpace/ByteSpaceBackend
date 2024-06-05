@@ -7,7 +7,7 @@ class UsuarioService {
         if (!(usuarioRepository instanceof UsuarioRepository)) {
             throw new Error('usuarioRepository debe ser una instancia de UsuarioRepository');
         }
-        console.log("Contructor")
+        console.log("Contructor UsuarioService")
         this.usuarioRepository = usuarioRepository;
     }
 

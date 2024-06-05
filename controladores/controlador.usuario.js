@@ -1,11 +1,14 @@
 const UsuarioService = require('../Domain/Service/ServicioUsuario');
 
+const services = new UsuarioService();
+
 class UsuarioController {
     constructor() {
         this.usuarioService = new UsuarioService();
+        console.log("this.usuarioService: " + this.usuarioService)
     }
 
-    async iniciarSesion(req, res) {
+    iniciarSesion = async (req, res) => {
         console.log('Iniciar sesión controlador:', req.body);
         try {
             console.log("Entro")
@@ -21,7 +24,7 @@ class UsuarioController {
         }
     }
 
-    async cambiarRol(req, res) {
+    cambiarRol = async (req, res) => { 
         console.log('Cambiar rol controlador:', req.body);
         try {
             const { email, nuevoRol, nuevoDepartamento } = req.body;
