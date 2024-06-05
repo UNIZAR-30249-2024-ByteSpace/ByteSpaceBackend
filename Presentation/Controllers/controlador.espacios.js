@@ -38,13 +38,14 @@ class EspacioController {
     actualizarEspacio = async (req, res) => {
         try {
             const updatedData = req.body;
-            const updatedEspacio = await espacioService.actualizarEspacio(updatedData);
+            const updatedEspacio = await espacioService.actualizarEspacio(updatedData.id, updatedData);
             res.status(200).json(updatedEspacio);
         } catch (error) {
             console.error('Error al actualizar el espacio:', error.message);
             res.status(500).json({ error: 'Error al actualizar el espacio' });
         }
-    }
+    };
+    
 }
 
 module.exports = new EspacioController();

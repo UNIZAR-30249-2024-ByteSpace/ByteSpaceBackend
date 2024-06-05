@@ -16,9 +16,10 @@ class MongoEspacioRepository extends EspacioRepository {
         return await nuevoEspacio.save();
     }
 
-    async update(espacio) {
-        return await EspacioModelo.findOneAndUpdate({ id: espacio.id }, espacio, { new: true });
+    async update(id, updatedData) {
+        return await EspacioModelo.findOneAndUpdate({ id: id }, { $set: updatedData }, { new: true });
     }
+    
 }
 
 module.exports = MongoEspacioRepository;

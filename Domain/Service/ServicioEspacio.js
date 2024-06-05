@@ -88,22 +88,19 @@ class EspacioService {
         return nuevaReserva;
     }
 
-    async actualizarEspacio(updatedData) {
+    async actualizarEspacio(id, updatedData) {
         console.log("UPDATED DATA: " + updatedData);
-        console.log("ID: " + updatedData.id);
+        console.log("ID: " + id);
         
-        const existingEspacio = await this.espacioRepository.update(
-            { id: updatedData.id }, // Filtro para encontrar el espacio por su id
-            updatedData, // Datos actualizados del espacio
-            { new: true } // Devolver el documento actualizado
-        );
-    
+        const existingEspacio = await this.espacioRepository.update(id, updatedData);
+        
         if (!existingEspacio) {
             throw new Error('Espacio no encontrado');
         }
-    
+        
         return new Espacio(existingEspacio); // Devolver el espacio actualizado
     }
+    
 
     esReservaPotencialmenteInvalida(usuario, espacio) {
         // Lógica para determinar si una reserva es potencialmente inválida
