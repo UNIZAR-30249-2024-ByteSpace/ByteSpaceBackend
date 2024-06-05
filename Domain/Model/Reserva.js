@@ -1,11 +1,15 @@
 // domain/entities/Reserva.js
 class Reserva {
-    constructor({ id, idPersona, fecha, hora, potencialInvalida }) {
+    constructor({ id, horaInicio, horaFin, fecha, idPersona, idEspacio, potencialInvalida, asistentes, timestamp }) {
         this.id = id;
-        this.idPersona = idPersona;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
         this.fecha = fecha;
-        this.hora = hora;
+        this.idPersona = idPersona;
+        this.idEspacio = idEspacio;
         this.potencialInvalida = potencialInvalida;
+        this.asistentes = asistentes;
+        this.timestamp = timestamp;
     }
 
     cancelar() {
