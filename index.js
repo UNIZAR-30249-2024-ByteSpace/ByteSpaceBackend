@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
     return res.status(200).json({"Esta corriendo" : 'la api' })
 })
 //Routes
-var spacesRouter = require("./Presentation/Routes/espacios");
-var reserveRouter = require("./Presentation/Routes/reservas");
-var usersRouter = require("./Presentation/Routes/user");
+var spacesRouter = require("./Application/Routes/espacios");
+var reserveRouter = require("./Application/Routes/reservas");
+var usersRouter = require("./Application/Routes/user");
 require('./reservasCron');
 app.use("/api/users", usersRouter);
 app.use("/api/reserve", reserveRouter);

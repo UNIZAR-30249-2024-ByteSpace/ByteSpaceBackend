@@ -1,5 +1,5 @@
 // controladores/ReservaController.js
-const ReservaService = require('../../Domain/Service/ServicioReserva');
+const ReservaService = require('../Service/ServicioReserva');
 const reservaService = new ReservaService();
 
 class ReservaController {

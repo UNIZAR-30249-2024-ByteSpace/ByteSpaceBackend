@@ -1,5 +1,5 @@
 // controladores/EspacioController.js
-const EspacioService = require('../../Domain/Service/ServicioEspacio');
+const EspacioService = require('../Service/ServicioEspacio');
 const espacioService = new EspacioService();
 
 class EspacioController {

@@ -1,5 +1,5 @@
 // services/EspacioService.js
-const Espacio = require('../Model/Espacio.js');
+const Espacio = require('../../Domain/Model/Espacio.js');
 const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 const UsuarioModelo = require('../../modelos/modelo.usuario.js');
