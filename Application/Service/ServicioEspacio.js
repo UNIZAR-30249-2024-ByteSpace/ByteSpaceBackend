@@ -108,15 +108,15 @@ class EspacioService {
             return true;
         }
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') &&
-            (espacio.categoria === 'despacho' || (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
+            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA')) {
             return true;
         }
         if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {
             return true;
         }
         if (usuario.rol === 'tecnico de laboratorio' &&
-            (espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio' ||
-            (usuario.departamento !== espacio.departamento && usuario.departamento !== 'EINA'))) {
+            ((espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio') ||
+            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA'))) {
             return true;
         }
         return false;
