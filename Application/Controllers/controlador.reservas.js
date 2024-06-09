@@ -49,6 +49,8 @@ class ReservaController {
         }
     }
     
+    // controllers/ReservaController.js
+    // controllers/ReservaController.js
     crearReserva = async (req, res) => {
         try {
             const { idUsuario, fecha, horaInicio, horaFin, asistentes } = req.body;
@@ -61,12 +63,19 @@ class ReservaController {
                 horaFin,
                 asistentes
             });
-            res.status(200).json({ message: 'Reserva creada con éxito', reserva });
+
+            const message = reserva.potencialInvalida 
+                ? 'Reserva potencialmente inválida creada con éxito' 
+                : 'Reserva creada con éxito';
+
+            res.status(200).json({ message, reserva });
         } catch (error) {
             console.error('Error al crear la reserva:', error.message);
             res.status(500).json({ error: 'Error al crear la reserva' });
         }
     }
+
+
 
     obtenerReservaPorId = async (req, res) => {
         try {

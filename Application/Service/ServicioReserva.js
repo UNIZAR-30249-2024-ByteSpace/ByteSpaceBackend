@@ -2,6 +2,7 @@
 const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository.js');
+const Reserva = require('../../Domain/Model/Reserva.js');
 
 class ReservaService {
     constructor() {
@@ -11,7 +12,7 @@ class ReservaService {
     }
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
-        const usuario = await this.usuarioRepository.findById( idUsuario );
+        const usuario = await this.usuarioRepository.findById(idUsuario);
         const espacio = await this.espacioRepository.findById(idEspacio);
 
         if (!usuario || !espacio) {
@@ -37,7 +38,7 @@ class ReservaService {
             throw new Error('El espacio ya está reservado para el periodo solicitado');
         }
 
-        const nuevaReserva = {
+        const nuevaReserva = new Reserva({
             id: this.generarIdUnico(),
             horaInicio,
             horaFin,
@@ -47,22 +48,23 @@ class ReservaService {
             potencialInvalida: this.esReservaPotencialmenteInvalida(usuario, espacio),
             asistentes,
             timestamp: Date.now()
-        };
+        });
 
         await this.reservaRepository.save(nuevaReserva);
         return nuevaReserva;
     }
 
     async getReservasAdmin() {
-        return await this.reservaRepository.find({});
+        const reservas = await this.reservaRepository.find({});
+        return reservas.map(reservaData => new Reserva(reservaData));
     }
 
     async obtenerReservaPorId(id) {
-        const reserva = await this.reservaRepository.findById(id);
-        if (!reserva) {
+        const reservaData = await this.reservaRepository.findById(id);
+        if (!reservaData) {
             throw new Error('Reserva no encontrada');
         }
-        return reserva;
+        return new Reserva(reservaData);
     }
 
     async cancel(id) {
@@ -79,15 +81,12 @@ class ReservaService {
             throw new Error('Reserva no encontrada');
         }
         reserva.potencialInvalida = false;
-        await this.reservaRepository.save(reserva); // Asumiendo que hay un método save para guardar la reserva
+        await this.reservaRepository.update(reserva);
     }
 
     async getReservasByUserId(userId) {
-        // Implementa la lógica para obtener las reservas de un usuario específico
-        // Puedes usar el método find del repositorio de reservas para buscar las reservas asociadas al userId
-        // Por ejemplo:
         const reservas = await this.reservaRepository.find({ idPersona: userId });
-        return reservas;
+        return reservas.map(reservaData => new Reserva(reservaData));
     }
 
     esReservaPotencialmenteInvalida(usuario, espacio) {

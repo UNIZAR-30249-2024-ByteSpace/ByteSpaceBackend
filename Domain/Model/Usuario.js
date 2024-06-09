@@ -1,7 +1,7 @@
-// domain/entities/usuario.js
+// domain/entities/Usuario.js
 const Departamento = require('../Value_Objects/Departamento');
 const Rol = require('../Value_Objects/Rol');
-  
+
 class Usuario {
     constructor({ id, username, email, password, rol, departamento }) {
         this.id = id;
@@ -9,9 +9,8 @@ class Usuario {
         this.email = email;
         this.password = password;
         this.rol = new Rol(rol).getNombre();
-        // Si el departamento no se proporciona, se establece como null
-        this.departamento = departamento !== undefined ? new Departamento(departamento).getNombre() : null;
+        this.departamento = departamento ? new Departamento(departamento).getNombre() : null; // Manejar caso nulo
     }
 }
-  
-  module.exports = Usuario;
+
+module.exports = Usuario;

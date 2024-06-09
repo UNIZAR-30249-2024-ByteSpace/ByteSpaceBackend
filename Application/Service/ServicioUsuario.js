@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository'); // Asegúrate de tener este repositorio implementado
+const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository');
+const Usuario = require('../../Domain/Model/Usuario.js');
 
 class UsuarioService {
     constructor() {
@@ -20,11 +21,13 @@ class UsuarioService {
             throw new Error('Formato de email no válido.');
         }
 
-        const usuario = await this.usuarioRepository.findByEmail(username);
-        if (!usuario) {
+        const usuarioData = await this.usuarioRepository.findByEmail(username);
+        if (!usuarioData) {
             console.log('Usuario no encontrado:', username);
             throw new Error('Usuario no encontrado');
         }
+
+        const usuario = new Usuario(usuarioData);
 
         if (usuario.password !== password) {
             console.log('Contraseña incorrecta para el usuario:', username);
@@ -56,15 +59,17 @@ class UsuarioService {
             throw new Error('Formato de email no válido.');
         }
 
-        const usuario = await this.usuarioRepository.findByEmail(email);
-        if (!usuario) {
+        const usuarioData = await this.usuarioRepository.findByEmail(email);
+        if (!usuarioData) {
             console.log('Usuario no encontrado:', email);
             throw new Error('Usuario no encontrado');
         }
 
+        const usuario = new Usuario(usuarioData);
+
         if (['estudiante', 'conserje', 'gerente'].includes(nuevoRol)) {
             usuario.rol = nuevoRol;
-            usuario.departamento = undefined;
+            usuario.departamento = null;
         } else if (nuevoDepartamento !== undefined) {
             if (nuevoDepartamento !== 'informática e ingeniería de sistemas' && nuevoDepartamento !== 'ingeniería electrónica y comunicaciones') {
                 console.log('Nuevo departamento inválido:', nuevoDepartamento);

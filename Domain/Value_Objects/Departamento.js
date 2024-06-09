@@ -6,10 +6,11 @@ class Departamento {
             'informática e ingeniería de sistemas',
             'ingeniería electrónica y comunicaciones'
         ]; // Agrega los departamentos válidos aquí
-        if (!validDepartments.includes(nombre)) {
+        
+        if (nombre && !validDepartments.includes(nombre)) {
             throw new Error(`Departamento inválido: ${nombre}`);
         }
-        this.nombre = nombre;
+        this.nombre = nombre || null; // Permitir que el nombre sea nulo si no se proporciona
     }
 
     getNombre() {
