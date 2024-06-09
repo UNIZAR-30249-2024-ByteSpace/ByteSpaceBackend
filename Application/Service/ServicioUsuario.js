@@ -1,14 +1,9 @@
 const jwt = require('jsonwebtoken');
 const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository'); // Asegúrate de tener este repositorio implementado
-const UsuarioRepository = require('../../Domain/Repositories/UsuarioRepository');
 
 class UsuarioService {
-    constructor(usuarioRepository = new MongoUsuarioRepository()) {
-        if (!(usuarioRepository instanceof UsuarioRepository)) {
-            throw new Error('usuarioRepository debe ser una instancia de UsuarioRepository');
-        }
-        console.log("Contructor UsuarioService")
-        this.usuarioRepository = usuarioRepository;
+    constructor() {
+        this.usuarioRepository = new MongoUsuarioRepository();
     }
 
     validarEmail(email) {

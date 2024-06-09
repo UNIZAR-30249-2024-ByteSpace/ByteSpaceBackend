@@ -8,6 +8,11 @@ class MongoUsuarioRepository extends UsuarioRepository {
         return usuarioDoc ? new Usuario(usuarioDoc.toObject()) : null;
     }
 
+    async findById(id) {
+        const usuarioDoc = await UsuarioModelo.findOne({ id });
+        return usuarioDoc ? new Usuario(usuarioDoc.toObject()) : null;
+    }
+
     async update(usuario) {
         const usuarioDoc = await UsuarioModelo.findOneAndUpdate(
             { email: usuario.email },

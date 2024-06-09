@@ -1,7 +1,5 @@
 const UsuarioService = require('../Service/ServicioUsuario');
 
-const services = new UsuarioService();
-
 class UsuarioController {
     constructor() {
         this.usuarioService = new UsuarioService();

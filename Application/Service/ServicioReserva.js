@@ -1,16 +1,17 @@
 // services/ReservaService.js
 const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
-const UsuarioModelo = require('../../modelos/modelo.usuario.js');
+const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository.js');
 
 class ReservaService {
     constructor() {
         this.reservaRepository = new MongoReservaRepository();
         this.espacioRepository = new MongoEspacioRepository();
+        this.usuarioRepository = new MongoUsuarioRepository();
     }
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
-        const usuario = await UsuarioModelo.findOne({ id: idUsuario });
+        const usuario = await this.usuarioRepository.findById( idUsuario );
         const espacio = await this.espacioRepository.findById(idEspacio);
 
         if (!usuario || !espacio) {

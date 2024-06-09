@@ -68,16 +68,6 @@ class ReservaController {
         }
     }
 
-    obtenerReservas = async (req, res) => {
-        try {
-            const reservas = await reservaService.obtenerReservas();
-            res.status(200).json(reservas);
-        } catch (error) {
-            console.error('Error al obtener reservas:', error.message);
-            res.status(500).json({ error: 'Error al obtener reservas' });
-        }
-    }
-
     obtenerReservaPorId = async (req, res) => {
         try {
             const { id } = req.params;
@@ -86,17 +76,6 @@ class ReservaController {
         } catch (error) {
             console.error('Error al obtener la reserva:', error.message);
             res.status(500).json({ error: 'Error al obtener la reserva' });
-        }
-    }
-
-    cancelarReserva = async (req, res) => {
-        try {
-            const { id } = req.params;
-            await reservaService.cancelarReserva(id);
-            res.status(200).json({ message: 'Reserva cancelada con éxito' });
-        } catch (error) {
-            console.error('Error al cancelar la reserva:', error.message);
-            res.status(500).json({ error: 'Error al cancelar la reserva' });
         }
     }
 }

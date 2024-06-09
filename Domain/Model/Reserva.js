@@ -11,14 +11,6 @@ class Reserva {
         this.asistentes = asistentes;
         this.timestamp = timestamp;
     }
-
-    cancelar() {
-        // Lógica de negocio para cancelar una reserva
-    }
-
-    aceptar() {
-        this.potencialInvalida = false;
-    }
 }
 
 module.exports = Reserva;
