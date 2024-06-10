@@ -9,7 +9,7 @@ class EspacioService {
 
     async obtenerEspaciosReservables() {
         const espacios = await this.espacioRepository.find({ reservable: true });
-        return espacios.map(espacioData => new Espacio(espacioData.toObject()));
+        return espacios.map(espacioData => new Espacio(espacioData));
     }
 
     async obtenerEspacioPorId(id) {
@@ -17,7 +17,7 @@ class EspacioService {
         if (!espacioData) {
             throw new Error('Espacio no encontrado');
         }
-        return new Espacio(espacioData.toObject());
+        return new Espacio(espacioData);
     }
 
     async filtrarEspacios(queryParams) {
@@ -39,7 +39,7 @@ class EspacioService {
         }
 
         const espacios = await this.espacioRepository.find(query);
-        return espacios.map(espacioData => new Espacio(espacioData.toObject()));
+        return espacios.map(espacioData => new Espacio(espacioData));
     }
 
     async actualizarEspacio(id, updatedData) {
@@ -47,7 +47,7 @@ class EspacioService {
         if (!existingEspacio) {
             throw new Error('Espacio no encontrado');
         }
-        return new Espacio(existingEspacio.toObject());
+        return new Espacio(existingEspacio);
     }
 
     generarIdUnico() {

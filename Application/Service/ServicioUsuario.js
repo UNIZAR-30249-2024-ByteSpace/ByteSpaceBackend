@@ -23,7 +23,7 @@ class UsuarioService {
             throw new Error('Usuario no encontrado');
         }
 
-        const usuario = new Usuario(usuarioData.toObject());
+        const usuario = new Usuario(usuarioData);
 
         if (usuario.password !== password) {
             throw new Error('El email o la contraseña no son correctas');
@@ -55,7 +55,7 @@ class UsuarioService {
             throw new Error('Usuario no encontrado');
         }
 
-        const usuario = new Usuario(usuarioData.toObject());
+        const usuario = new Usuario(usuarioData);
 
         if (['estudiante', 'conserje', 'gerente'].includes(nuevoRol)) {
             usuario.rol = nuevoRol;

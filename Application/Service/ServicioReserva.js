@@ -5,12 +5,14 @@ const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoU
 const Reserva = require('../../Domain/Model/Reserva.js');
 const Espacio = require('../../Domain/Model/Espacio.js');
 const Usuario = require('../../Domain/Model/Usuario.js');
+const PoliticaReserva = require('../../Domain/Value_objects/PoliticaReserva.js');
 
 class ReservaService {
     constructor() {
         this.reservaRepository = new MongoReservaRepository();
         this.espacioRepository = new MongoEspacioRepository();
         this.usuarioRepository = new MongoUsuarioRepository();
+        this.politicaReserva = new PoliticaReserva();
     }
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
@@ -21,8 +23,8 @@ class ReservaService {
             throw new Error('Usuario o espacio no encontrado');
         }
 
-        const usuario = new Usuario(usuarioDoc.toObject());
-        const espacio = new Espacio(espacioDoc.toObject());
+        const usuario = new Usuario(usuarioDoc);
+        const espacio = new Espacio(espacioDoc);
 
         const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
         if (asistentes > maxCapacity) {
@@ -61,7 +63,7 @@ class ReservaService {
 
     async getReservasAdmin() {
         const reservas = await this.reservaRepository.find({});
-        return reservas.map(reservaData => new Reserva(reservaData.toObject()));
+        return reservas.map(reservaData => new Reserva(reservaData));
     }
 
     async obtenerReservaPorId(id) {
@@ -69,7 +71,7 @@ class ReservaService {
         if (!reservaData) {
             throw new Error('Reserva no encontrada');
         }
-        return new Reserva(reservaData.toObject());
+        return new Reserva(reservaData);
     }
 
     async cancel(id) {
@@ -91,26 +93,11 @@ class ReservaService {
 
     async getReservasByUserId(userId) {
         const reservas = await this.reservaRepository.find({ idPersona: userId });
-        return reservas.map(reservaData => new Reserva(reservaData.toObject()));
+        return reservas.map(reservaData => new Reserva(reservaData));
     }
 
     esReservaPotencialmenteInvalida(usuario, espacio) {
-        if (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
-            return true;
-        }
-        if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') &&
-            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA')) {
-            return true;
-        }
-        if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {
-            return true;
-        }
-        if (usuario.rol === 'técnico de laboratorio' &&
-            ((espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio') ||
-            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA'))) {
-            return true;
-        }
-        return false;
+        return this.politicaReserva.esReservaPotencialmenteInvalida(usuario, espacio);
     }
 
     generarIdUnico() {
