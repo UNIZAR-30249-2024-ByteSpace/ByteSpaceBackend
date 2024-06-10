@@ -3,6 +3,8 @@ const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoR
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository.js');
 const Reserva = require('../../Domain/Model/Reserva.js');
+const Espacio = require('../../Domain/Model/Espacio.js');
+const Usuario = require('../../Domain/Model/Usuario.js');
 
 class ReservaService {
     constructor() {
@@ -12,12 +14,15 @@ class ReservaService {
     }
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
-        const usuario = await this.usuarioRepository.findById(idUsuario);
-        const espacio = await this.espacioRepository.findById(idEspacio);
+        const usuarioDoc = await this.usuarioRepository.findById(idUsuario);
+        const espacioDoc = await this.espacioRepository.findById(idEspacio);
 
-        if (!usuario || !espacio) {
+        if (!usuarioDoc || !espacioDoc) {
             throw new Error('Usuario o espacio no encontrado');
         }
+
+        const usuario = new Usuario(usuarioDoc.toObject());
+        const espacio = new Espacio(espacioDoc.toObject());
 
         const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
         if (asistentes > maxCapacity) {
@@ -56,7 +61,7 @@ class ReservaService {
 
     async getReservasAdmin() {
         const reservas = await this.reservaRepository.find({});
-        return reservas.map(reservaData => new Reserva(reservaData));
+        return reservas.map(reservaData => new Reserva(reservaData.toObject()));
     }
 
     async obtenerReservaPorId(id) {
@@ -64,7 +69,7 @@ class ReservaService {
         if (!reservaData) {
             throw new Error('Reserva no encontrada');
         }
-        return new Reserva(reservaData);
+        return new Reserva(reservaData.toObject());
     }
 
     async cancel(id) {
@@ -86,12 +91,10 @@ class ReservaService {
 
     async getReservasByUserId(userId) {
         const reservas = await this.reservaRepository.find({ idPersona: userId });
-        return reservas.map(reservaData => new Reserva(reservaData));
+        return reservas.map(reservaData => new Reserva(reservaData.toObject()));
     }
 
     esReservaPotencialmenteInvalida(usuario, espacio) {
-        console.log('Usuario:', usuario);
-        console.log('Espacio:', espacio);
         if (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
             return true;
         }

@@ -8,29 +8,24 @@ class UsuarioService {
     }
 
     validarEmail(email) {
-        console.log('Validando email:', email);
         return email.match(
             /^(([^<>()\[\]\.,;:\s@"]+(.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
     }
 
     async iniciarSesion(username, password) {
-        console.log('Iniciando sesión para:', username);
         if (!this.validarEmail(username)) {
-            console.log('Formato de email no válido:', username);
             throw new Error('Formato de email no válido.');
         }
 
         const usuarioData = await this.usuarioRepository.findByEmail(username);
         if (!usuarioData) {
-            console.log('Usuario no encontrado:', username);
             throw new Error('Usuario no encontrado');
         }
 
-        const usuario = new Usuario(usuarioData);
+        const usuario = new Usuario(usuarioData.toObject());
 
         if (usuario.password !== password) {
-            console.log('Contraseña incorrecta para el usuario:', username);
             throw new Error('El email o la contraseña no son correctas');
         }
 
@@ -39,8 +34,6 @@ class UsuarioService {
             'clavesecreta',
             { expiresIn: '1h' }
         );
-
-        console.log('Sesión iniciada correctamente para:', username);
 
         return {
             username: usuario.username,
@@ -53,38 +46,31 @@ class UsuarioService {
     }
 
     async cambiarRol(email, nuevoRol, nuevoDepartamento) {
-        console.log('Cambiando rol para:', email, 'Nuevo rol:', nuevoRol, 'Nuevo departamento:', nuevoDepartamento);
         if (!this.validarEmail(email)) {
-            console.log('Formato de email no válido:', email);
             throw new Error('Formato de email no válido.');
         }
 
         const usuarioData = await this.usuarioRepository.findByEmail(email);
         if (!usuarioData) {
-            console.log('Usuario no encontrado:', email);
             throw new Error('Usuario no encontrado');
         }
 
-        const usuario = new Usuario(usuarioData);
+        const usuario = new Usuario(usuarioData.toObject());
 
         if (['estudiante', 'conserje', 'gerente'].includes(nuevoRol)) {
             usuario.rol = nuevoRol;
             usuario.departamento = null;
         } else if (nuevoDepartamento !== undefined) {
             if (nuevoDepartamento !== 'informática e ingeniería de sistemas' && nuevoDepartamento !== 'ingeniería electrónica y comunicaciones') {
-                console.log('Nuevo departamento inválido:', nuevoDepartamento);
                 throw new Error('El nuevo departamento es invalido.');
             }
             usuario.rol = nuevoRol;
             usuario.departamento = nuevoDepartamento;
         } else {
-            console.log('Cambio de rol requiere nuevo departamento');
             throw new Error('Este cambio de rol requiere de un nuevo departamento.');
         }
 
         await this.usuarioRepository.update(usuario);
-
-        console.log('Rol y departamento actualizados con éxito para:', email);
 
         return {
             message: 'Rol y departamento actualizados con éxito',

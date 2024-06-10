@@ -2,7 +2,6 @@
 const Espacio = require('../../Domain/Model/Espacio.js');
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
 
-
 class EspacioService {
     constructor() {
         this.espacioRepository = new MongoEspacioRepository();
@@ -10,7 +9,7 @@ class EspacioService {
 
     async obtenerEspaciosReservables() {
         const espacios = await this.espacioRepository.find({ reservable: true });
-        return espacios.map(espacioData => new Espacio(espacioData));
+        return espacios.map(espacioData => new Espacio(espacioData.toObject()));
     }
 
     async obtenerEspacioPorId(id) {
@@ -18,7 +17,7 @@ class EspacioService {
         if (!espacioData) {
             throw new Error('Espacio no encontrado');
         }
-        return new Espacio(espacioData);
+        return new Espacio(espacioData.toObject());
     }
 
     async filtrarEspacios(queryParams) {
@@ -40,42 +39,15 @@ class EspacioService {
         }
 
         const espacios = await this.espacioRepository.find(query);
-        return espacios.map(espacioData => new Espacio(espacioData));
+        return espacios.map(espacioData => new Espacio(espacioData.toObject()));
     }
 
-
     async actualizarEspacio(id, updatedData) {
-        console.log("UPDATED DATA: " + updatedData);
-        console.log("ID: " + id);
-        
         const existingEspacio = await this.espacioRepository.update(id, updatedData);
-        
         if (!existingEspacio) {
             throw new Error('Espacio no encontrado');
         }
-        
-        return new Espacio(existingEspacio); // Devolver el espacio actualizado
-    }
-    
-
-    esReservaPotencialmenteInvalida(usuario, espacio) {
-        // Lógica para determinar si una reserva es potencialmente inválida
-        if (usuario.rol === 'estudiante' && espacio.categoria !== 'salacomun') {
-            return true;
-        }
-        if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente investigador') &&
-            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA')) {
-            return true;
-        }
-        if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {
-            return true;
-        }
-        if (usuario.rol === 'tecnico de laboratorio' &&
-            ((espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio') ||
-            (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA'))) {
-            return true;
-        }
-        return false;
+        return new Espacio(existingEspacio.toObject());
     }
 
     generarIdUnico() {
