@@ -9,6 +9,7 @@ class Espacio {
         this._asignadoA = asignadoA;
         this._porcentajeOcupacion = porcentajeOcupacion;
         this._tamanio = tamanio;
+        this._maxOcupantes = maxOcupantes;
         this._tipo = new TipoEspacio(tipo).getNombre();
         this._informacion = informacion;
         this._planta = planta;
@@ -55,6 +56,10 @@ class Espacio {
         return this._planta;
     }
 
+    get maxOcupantes() {
+        return this._maxOcupantes;
+    }
+
     // Métodos setter
     set id(newId) {
         this._id = newId;
@@ -95,6 +100,7 @@ class Espacio {
     set planta(newPlanta) {
         this._planta = newPlanta;
     }
+
 
     getTipo() {
         return this.tipo.getNombre();
