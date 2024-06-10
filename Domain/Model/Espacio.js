@@ -1,4 +1,6 @@
 // domain/entities/Espacio.js
+const TipoEspacio = require('../value-objects/tipoEspacio');
+
 class Espacio {
     constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta }) {
         this._id = id;
@@ -7,8 +9,7 @@ class Espacio {
         this._asignadoA = asignadoA;
         this._porcentajeOcupacion = porcentajeOcupacion;
         this._tamanio = tamanio;
-        this._tipo = tipo;
-        this._maxOcupantes = maxOcupantes;
+        this._tipo = new TipoEspacio(tipo);
         this._informacion = informacion;
         this._planta = planta;
     }
@@ -93,6 +94,10 @@ class Espacio {
 
     set planta(newPlanta) {
         this._planta = newPlanta;
+    }
+
+    getTipo() {
+        return this.tipo.getNombre();
     }
 }
 
