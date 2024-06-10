@@ -55,6 +55,7 @@ class ReservaController {
         try {
             const { idUsuario, fecha, horaInicio, horaFin, asistentes } = req.body;
             const { id } = req.params;
+            console.log("id: " + id)
             const reserva = await reservaService.crearReserva({
                 idUsuario,
                 idEspacio: id,

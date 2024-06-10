@@ -17,22 +17,27 @@ class ReservaService {
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
         const usuarioDoc = await this.usuarioRepository.findById(idUsuario);
+        console.log("idEspacio: "+idEspacio)
         const espacioDoc = await this.espacioRepository.findById(idEspacio);
 
-        if (!usuarioDoc || !espacioDoc) {
-            throw new Error('Usuario o espacio no encontrado');
+        if (!usuarioDoc ) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        if (!espacioDoc) {
+            throw new Error('Espacio no encontrado');
         }
 
         const usuario = new Usuario(usuarioDoc);
         const espacio = new Espacio(espacioDoc);
-
+        console.log("Paso 1  ")
         const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
         if (asistentes > maxCapacity) {
             throw new Error('El número de asistentes excede la capacidad del espacio');
         }
 
         const fechaInicio = new Date(fecha);
-
+        console.log("Paso 2  ")
         const reservas = await this.reservaRepository.find({
             idEspacio: idEspacio,
             fecha: fechaInicio,
@@ -44,7 +49,7 @@ class ReservaService {
         if (reservas.length > 0) {
             throw new Error('El espacio ya está reservado para el periodo solicitado');
         }
-
+        console.log("Paso 3  ")
         const nuevaReserva = new Reserva({
             id: this.generarIdUnico(),
             horaInicio,
@@ -56,7 +61,7 @@ class ReservaService {
             asistentes,
             timestamp: Date.now()
         });
-
+        console.log("Paso 4  ")
         await this.reservaRepository.save(nuevaReserva);
         return nuevaReserva;
     }

@@ -15,7 +15,17 @@ class MongoReservaRepository extends ReservaRepository {
     }
 
     async save(reserva) {
-        const nuevaReserva = new ReservaModelo(reserva);
+        const nuevaReserva = new ReservaModelo({
+            id: reserva.id,
+            idPersona: reserva.idPersona,
+            idEspacio: reserva.idEspacio,
+            fecha: reserva.fecha,
+            horaInicio: reserva.horaInicio,
+            horaFin: reserva.horaFin,
+            potencialInvalida: reserva.potencialInvalida,
+            asistentes: reserva.asistentes,
+            timestamp: reserva.timestamp
+        });
         const savedReserva = await nuevaReserva.save();
         return new Reserva(savedReserva.toObject());
     }
