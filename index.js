@@ -5,7 +5,6 @@ const morgan = require('morgan');
 var mongoose = require("mongoose");
 const  cors =require('cors')
 //const {addSpacesFromCSV} = require('./addSpacesFromCSV.js')
-const {agregarEspaciosDePrueba} = require('./pruebas.js')
 
 const API_PORT = process.env.PORT || 3000
 //Configuraciones
