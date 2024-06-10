@@ -6,18 +6,18 @@ const Espacio = require('../../Domain/Model/Espacio');
 class MongoEspacioRepository extends EspacioRepository {
     async find(query) {
         const espacios = await EspacioModelo.find(query);
-        return espacios.map(espacio => new Espacio(espacio.toObject()));
+        return espacios.map(espacio => new Espacio(espacio));
     }
 
     async findById(id) {
         const espacioDoc = await EspacioModelo.findOne({ id });
-        return espacioDoc ? new Espacio(espacioDoc.toObject()) : null;
+        return espacioDoc ? new Espacio(espacioDoc) : null;
     }
 
     async save(espacio) {
         const nuevoEspacio = new EspacioModelo(espacio);
         const savedEspacio = await nuevoEspacio.save();
-        return new Espacio(savedEspacio.toObject());
+        return new Espacio(savedEspacio);
     }
 
     async update(id, updatedData) {
@@ -26,7 +26,7 @@ class MongoEspacioRepository extends EspacioRepository {
             { $set: updatedData },
             { new: true }
         );
-        return updatedEspacio ? new Espacio(updatedEspacio.toObject()) : null;
+        return updatedEspacio ? new Espacio(updatedEspacio) : null;
     }
 }
 
