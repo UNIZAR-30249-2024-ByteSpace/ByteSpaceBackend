@@ -62,6 +62,10 @@ class ReservaService {
             timestamp: Date.now()
         });
         console.log("Paso 4  ")
+        if (horaInicio < espacio.horaInicio || horaFin > espacio.horaFin) {
+            throw new Error('El espacio no está disponible en el horario solicitado');
+        }
+        console.log("Paso 5  ")
         await this.reservaRepository.save(nuevaReserva);
         return nuevaReserva;
     }

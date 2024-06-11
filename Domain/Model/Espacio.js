@@ -2,7 +2,7 @@
 const TipoEspacio = require('../Value_objects/TipoEspacio');
 
 class Espacio {
-    constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta }) {
+    constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta, horaInicio, horaFin }) {
         this._id = id;
         this._reservable = reservable;
         this._categoria = new TipoEspacio(categoria).getNombre();;
@@ -13,6 +13,8 @@ class Espacio {
         this._tipo = new TipoEspacio(tipo).getNombre();
         this._informacion = informacion;
         this._planta = planta;
+        this._horaInicio = horaInicio;
+        this._horaFin = horaFin;
     }
 
     // Métodos getter
@@ -60,6 +62,14 @@ class Espacio {
         return this._maxOcupantes;
     }
 
+    get horaInicio() {
+        return this._horaInicio;
+    }
+
+    get horaFin() {
+        return this._horaFin;
+    }
+
     // Métodos setter
     set id(newId) {
         this._id = newId;
@@ -99,6 +109,14 @@ class Espacio {
 
     set planta(newPlanta) {
         this._planta = newPlanta;
+    }
+
+    set horaInicio(newHoraInicio) {
+        this._horaInicio = newHoraInicio;
+    }
+
+    set horaFin(newHoraFin) {
+        this._horaFin = newHoraFin;
     }
 
 

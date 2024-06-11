@@ -601,6 +601,16 @@ async function <span class="fstat-no" title="function not covered" >crearReserva
 <span class="cstat-no" title="statement not covered" >            return;</span>
         }
 &nbsp;
+<span class="cstat-no" title="statement not covered">
+    if (horaInicio &lt; espacio.horaInicio || horaFin &gt; espacio.horaFin) {
+</span>
+<span class="cstat-no" title="statement not covered">
+    res.status(400).json({ error: 'El espacio no está disponible en el horario solicitado' });
+</span>
+<span class="cstat-no" title="statement not covered">
+    return;
+</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >        if (usuario.rol === 'estudiante' &amp;&amp; espacio.categoria !== 'salacomun') {</span>
 <span class="cstat-no" title="statement not covered" >            await guardarReservaPotencialmenteInvalida(idUsuario, id, fechaInicio, horaInicio, horaFin, asistentes);</span>
 <span class="cstat-no" title="statement not covered" >            res.status(200).json({ message: 'Reserva potencialmente inválida: El espacio no es común' });</span>

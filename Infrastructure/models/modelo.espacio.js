@@ -38,6 +38,12 @@ const EspacioSchema = mongoose.Schema({
     },
     asignadoA: {
         type: String
+    },
+    horaInicio: {
+        type: Number
+    },
+    horaFin: {
+        type: Number
     }
 });
 
