@@ -12,8 +12,8 @@ class PoliticaReserva {
             return true;
         }
         if (usuario.rol === 'técnico de laboratorio' &&
-            ((espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio') ||
-            (!usuario.departamento || !espacio.asignadoA || !usuario.departamento.includes(espacio.asignadoA)))) {
+        ((espacio.categoria !== 'salacomun' && espacio.categoria !== 'laboratorio') ||
+        (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA'))) {
             return true;
         }
         return false;

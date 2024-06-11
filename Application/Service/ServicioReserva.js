@@ -96,6 +96,16 @@ class ReservaService {
         await this.reservaRepository.update(reserva);
     }
 
+    async accept(id) {
+        const reserva = await this.obtenerReservaPorId(id);
+        if (!reserva) {
+            throw new Error('Reserva no encontrada');
+        }
+        //reserva.potencialInvalida = false;
+        const updatedReserva = await this.reservaRepository.update(id, { potencialInvalida: false });
+        return updatedReserva;
+    }
+
     async getReservasByUserId(userId) {
         const reservas = await this.reservaRepository.find({ idPersona: userId });
         return reservas.map(reservaData => new Reserva(reservaData));

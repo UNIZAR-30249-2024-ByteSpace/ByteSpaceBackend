@@ -5,7 +5,7 @@ class Espacio {
     constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta }) {
         this._id = id;
         this._reservable = reservable;
-        this._categoria = categoria;
+        this._categoria = new TipoEspacio(categoria).getNombre();;
         this._asignadoA = asignadoA;
         this._porcentajeOcupacion = porcentajeOcupacion;
         this._tamanio = tamanio;

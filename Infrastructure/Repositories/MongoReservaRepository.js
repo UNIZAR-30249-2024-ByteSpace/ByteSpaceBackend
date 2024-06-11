@@ -33,6 +33,11 @@ class MongoReservaRepository extends ReservaRepository {
     async delete(id) {
         return await ReservaModelo.findOneAndDelete({ id });
     }
+
+    async update(id, updatedData) {
+        const updatedReserva = await ReservaModelo.findOneAndUpdate({ id }, updatedData, { new: true });
+        return updatedReserva ? new Reserva(updatedReserva.toObject()) : null;
+    }
 }
 
 module.exports = MongoReservaRepository;
