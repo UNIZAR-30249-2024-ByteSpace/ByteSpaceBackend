@@ -1,6 +1,6 @@
 const cron = require('node-cron');
-const ReservaModel = require('./Infrastructure/Models/modelo.reserva');
-const UserModel = require('./Infrastructure/Models/modelo.usuario');
+const ReservaModel = require('../../Infrastructure/Models/modelo.reserva');
+const UserModel = require('../../Infrastructure/Models/modelo.usuario');
 const nodemailer = require('nodemailer');
 
 // Configurar nodemailer con tus credenciales de correo electrónico

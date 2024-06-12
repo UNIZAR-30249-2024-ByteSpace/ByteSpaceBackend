@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 var spacesRouter = require("./Application/Routes/espacios");
 var reserveRouter = require("./Application/Routes/reservas");
 var usersRouter = require("./Application/Routes/user");
-require('./reservasCron');
+require('./Domain/Services/reservasCron');
 app.use("/api/users", usersRouter);
 app.use("/api/reserve", reserveRouter);
 app.use("/api/spaces", spacesRouter);
