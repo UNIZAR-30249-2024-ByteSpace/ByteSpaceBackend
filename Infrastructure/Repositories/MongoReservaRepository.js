@@ -14,7 +14,7 @@ class MongoReservaRepository extends ReservaRepository {
         return reservaDoc ? new Reserva(reservaDoc.toObject()) : null;
     }
 
-    async save(reserva) {
+    async save(reserva, session = null) {
         const nuevaReserva = new ReservaModelo({
             id: reserva.id,
             idPersona: reserva.idPersona,
@@ -26,16 +26,22 @@ class MongoReservaRepository extends ReservaRepository {
             asistentes: reserva.asistentes,
             timestamp: reserva.timestamp
         });
-        const savedReserva = await nuevaReserva.save();
+        const savedReserva = session
+            ? await nuevaReserva.save({ session })
+            : await nuevaReserva.save();
         return new Reserva(savedReserva.toObject());
     }
 
-    async delete(id) {
-        return await ReservaModelo.findOneAndDelete({ id });
+    async delete(id, session = null) {
+        return session
+            ? await ReservaModelo.findOneAndDelete({ id }).session(session).exec()
+            : await ReservaModelo.findOneAndDelete({ id }).exec();
     }
 
-    async update(id, updatedData) {
-        const updatedReserva = await ReservaModelo.findOneAndUpdate({ id }, updatedData, { new: true });
+    async update(id, updatedData, session = null) {
+        const updatedReserva = session
+            ? await ReservaModelo.findOneAndUpdate({ id }, updatedData, { new: true }).session(session).exec()
+            : await ReservaModelo.findOneAndUpdate({ id }, updatedData, { new: true }).exec();
         return updatedReserva ? new Reserva(updatedReserva.toObject()) : null;
     }
 }

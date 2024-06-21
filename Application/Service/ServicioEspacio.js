@@ -1,6 +1,7 @@
 // services/EspacioService.js
 const Espacio = require('../../Domain/Model/Espacio.js');
 const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
+const mongoose = require('mongoose');
 
 class EspacioService {
     constructor() {
@@ -43,11 +44,21 @@ class EspacioService {
     }
 
     async actualizarEspacio(id, updatedData) {
-        const existingEspacio = await this.espacioRepository.update(id, updatedData);
-        if (!existingEspacio) {
-            throw new Error('Espacio no encontrado');
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            const existingEspacio = await this.espacioRepository.update(id, updatedData, session);
+            if (!existingEspacio) {
+                throw new Error('Espacio no encontrado');
+            }
+            await session.commitTransaction();
+            return new Espacio(existingEspacio);
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
         }
-        return new Espacio(existingEspacio);
     }
 
     generarIdUnico() {

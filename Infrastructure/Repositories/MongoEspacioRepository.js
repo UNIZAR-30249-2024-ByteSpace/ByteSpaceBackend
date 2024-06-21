@@ -14,19 +14,27 @@ class MongoEspacioRepository extends EspacioRepository {
         return espacioDoc ? new Espacio(espacioDoc) : null;
     }
 
-    async save(espacio) {
+    async save(espacio, session = null) {
         const nuevoEspacio = new EspacioModelo(espacio);
-        const savedEspacio = await nuevoEspacio.save();
-        return new Espacio(savedEspacio);
+        const savedEspacio = session
+            ? await nuevoEspacio.save({ session })
+            : await nuevoEspacio.save();
+        return new Espacio(savedEspacio.toObject());
     }
 
-    async update(id, updatedData) {
-        const updatedEspacio = await EspacioModelo.findOneAndUpdate(
-            { id: id },
-            { $set: updatedData },
-            { new: true }
-        );
-        return updatedEspacio ? new Espacio(updatedEspacio) : null;
+    async update(id, updatedData, session = null) {
+        const updatedEspacio = session
+            ? await EspacioModelo.findOneAndUpdate(
+                { id: id },
+                { $set: updatedData },
+                { new: true }
+            ).session(session).exec()
+            : await EspacioModelo.findOneAndUpdate(
+                { id: id },
+                { $set: updatedData },
+                { new: true }
+            ).exec();
+        return updatedEspacio ? new Espacio(updatedEspacio.toObject()) : null;
     }
 }
 

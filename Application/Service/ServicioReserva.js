@@ -6,6 +6,7 @@ const Reserva = require('../../Domain/Model/Reserva.js');
 const Espacio = require('../../Domain/Model/Espacio.js');
 const Usuario = require('../../Domain/Model/Usuario.js');
 const PoliticaReserva = require('../../Domain/Value_objects/PoliticaReserva.js');
+const mongoose = require('mongoose');
 
 class ReservaService {
     constructor() {
@@ -16,58 +17,67 @@ class ReservaService {
     }
 
     async crearReserva({ idUsuario, idEspacio, fecha, horaInicio, horaFin, asistentes }) {
-        const usuarioDoc = await this.usuarioRepository.findById(idUsuario);
-        console.log("idEspacio: "+idEspacio)
-        const espacioDoc = await this.espacioRepository.findById(idEspacio);
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            const usuarioDoc = await this.usuarioRepository.findById(idUsuario, session);
+            const espacioDoc = await this.espacioRepository.findById(idEspacio, session);
 
-        if (!usuarioDoc ) {
-            throw new Error('Usuario no encontrado');
-        }
+            if (!usuarioDoc) {
+                throw new Error('Usuario no encontrado');
+            }
 
-        if (!espacioDoc) {
-            throw new Error('Espacio no encontrado');
-        }
+            if (!espacioDoc) {
+                throw new Error('Espacio no encontrado');
+            }
 
-        const usuario = new Usuario(usuarioDoc);
-        const espacio = new Espacio(espacioDoc);
-        console.log("Paso 1  ")
-        const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
-        if (asistentes > maxCapacity) {
-            throw new Error('El número de asistentes excede la capacidad del espacio');
-        }
+            const usuario = new Usuario(usuarioDoc);
+            const espacio = new Espacio(espacioDoc);
 
-        const fechaInicio = new Date(fecha);
-        console.log("Paso 2  ")
-        const reservas = await this.reservaRepository.find({
-            idEspacio: idEspacio,
-            fecha: fechaInicio,
-            horaInicio: { $lt: horaFin },
-            horaFin: { $gt: horaInicio },
-            potencialInvalida: false
-        });
+            const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
+            if (asistentes > maxCapacity) {
+                throw new Error('El número de asistentes excede la capacidad del espacio');
+            }
 
-        if (reservas.length > 0) {
-            throw new Error('El espacio ya está reservado para el periodo solicitado');
+            const fechaInicio = new Date(fecha);
+
+            const reservas = await this.reservaRepository.find({
+                idEspacio: idEspacio,
+                fecha: fechaInicio,
+                horaInicio: { $lt: horaFin },
+                horaFin: { $gt: horaInicio },
+                potencialInvalida: false
+            }, session);
+
+            if (reservas.length > 0) {
+                throw new Error('El espacio ya está reservado para el periodo solicitado');
+            }
+
+            const nuevaReserva = new Reserva({
+                id: this.generarIdUnico(),
+                horaInicio,
+                horaFin,
+                fecha: fechaInicio,
+                idPersona: idUsuario,
+                idEspacio,
+                potencialInvalida: this.esReservaPotencialmenteInvalida(usuario, espacio),
+                asistentes,
+                timestamp: Date.now()
+            });
+
+            if (horaInicio < espacio.horaInicio || horaFin > espacio.horaFin) {
+                throw new Error('El espacio no está disponible en el horario solicitado');
+            }
+
+            await this.reservaRepository.save(nuevaReserva, session);
+            await session.commitTransaction();
+            return nuevaReserva;
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
         }
-        console.log("Paso 3  ")
-        const nuevaReserva = new Reserva({
-            id: this.generarIdUnico(),
-            horaInicio,
-            horaFin,
-            fecha: fechaInicio,
-            idPersona: idUsuario,
-            idEspacio,
-            potencialInvalida: this.esReservaPotencialmenteInvalida(usuario, espacio),
-            asistentes,
-            timestamp: Date.now()
-        });
-        console.log("Paso 4  ")
-        if (horaInicio < espacio.horaInicio || horaFin > espacio.horaFin) {
-            throw new Error('El espacio no está disponible en el horario solicitado');
-        }
-        console.log("Paso 5  ")
-        await this.reservaRepository.save(nuevaReserva);
-        return nuevaReserva;
     }
 
     async getReservasAdmin() {
@@ -84,30 +94,40 @@ class ReservaService {
     }
 
     async cancel(id) {
-        const reserva = await this.obtenerReservaPorId(id);
-        if (!reserva) {
-            throw new Error('Reserva no encontrada');
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            const reserva = await this.obtenerReservaPorId(id);
+            if (!reserva) {
+                throw new Error('Reserva no encontrada');
+            }
+            await this.reservaRepository.delete(id, session);
+            await session.commitTransaction();
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
         }
-        await this.reservaRepository.delete(id);
     }
 
     async accept(id) {
-        const reserva = await this.obtenerReservaPorId(id);
-        if (!reserva) {
-            throw new Error('Reserva no encontrada');
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            const reserva = await this.obtenerReservaPorId(id);
+            if (!reserva) {
+                throw new Error('Reserva no encontrada');
+            }
+            const updatedReserva = await this.reservaRepository.update(id, { potencialInvalida: false }, session);
+            await session.commitTransaction();
+            return updatedReserva;
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
         }
-        reserva.potencialInvalida = false;
-        await this.reservaRepository.update(reserva);
-    }
-
-    async accept(id) {
-        const reserva = await this.obtenerReservaPorId(id);
-        if (!reserva) {
-            throw new Error('Reserva no encontrada');
-        }
-        //reserva.potencialInvalida = false;
-        const updatedReserva = await this.reservaRepository.update(id, { potencialInvalida: false });
-        return updatedReserva;
     }
 
     async getReservasByUserId(userId) {

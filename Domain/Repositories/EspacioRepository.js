@@ -8,11 +8,11 @@ class EspacioRepository {
         throw new Error('Method not implemented');
     }
 
-    async save(espacio) {
+    async save(espacio, session = null) {
         throw new Error('Method not implemented');
     }
 
-    async update(espacio) {
+    async update(id, updatedData, session = null) {
         throw new Error('Method not implemented');
     }
 }

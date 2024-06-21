@@ -8,11 +8,15 @@ class ReservaRepository {
         throw new Error('Method not implemented');
     }
 
-    async save(reserva) {
+    async save(reserva, session = null) {
         throw new Error('Method not implemented');
     }
 
-    async delete(id) {
+    async delete(id, session = null) {
+        throw new Error('Method not implemented');
+    }
+
+    async update(id, updatedData, session = null) {
         throw new Error('Method not implemented');
     }
 }
