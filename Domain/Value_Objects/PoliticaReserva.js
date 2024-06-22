@@ -5,7 +5,7 @@ class PoliticaReserva {
             return true;
         }
         if ((usuario.rol === 'investigador contratado' || usuario.rol === 'docente-investigador') &&
-        (usuario.departamento !== espacio.asignadoA && espacio.asignadoA !== 'EINA' && (espacio.categoria === 'laboratorio' || espacio.categoria === 'seminario' || espacio.categoria === 'despacho'))) {
+        (usuario.departamento !== espacio.asignadoA && usuario.username !== espacio.asignadoA && espacio.asignadoA !== 'EINA' && (espacio.categoria === 'laboratorio' || espacio.categoria === 'seminario' || espacio.categoria === 'despacho'))) {
             return true;
         }
         if (usuario.rol === 'conserje' && espacio.categoria === 'despacho') {

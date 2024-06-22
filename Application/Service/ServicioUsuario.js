@@ -62,7 +62,7 @@ class UsuarioService {
             usuario.departamento = null;
         } else if (nuevoDepartamento !== undefined) {
             if (nuevoDepartamento !== 'informática e ingeniería de sistemas' && nuevoDepartamento !== 'ingeniería electrónica y comunicaciones') {
-                throw new Error('El nuevo departamento es invalido.');
+                throw new Error('El nuevo departamento es inválido.');
             }
             usuario.rol = nuevoRol;
             usuario.departamento = nuevoDepartamento;
