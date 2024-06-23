@@ -1,4 +1,4 @@
-class UsuarioRepository {
+class UsuarioInterface {
     async findByEmail(email) {
         throw new Error('Method not implemented');
     }
@@ -12,4 +12,4 @@ class UsuarioRepository {
     }
 }
 
-module.exports = UsuarioRepository;
+module.exports = UsuarioInterface;

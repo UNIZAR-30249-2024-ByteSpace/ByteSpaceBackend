@@ -1,4 +1,4 @@
-// domain/value-objects/rol.js
+// Value object
 
 class Rol {
     constructor(nombre) {

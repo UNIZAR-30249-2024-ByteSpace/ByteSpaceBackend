@@ -2,10 +2,10 @@
 const MongoReservaRepository = require('../Infrastructure/Repositories/MongoReservaRepository.js');
 const MongoEspacioRepository = require('../Infrastructure/Repositories/MongoEspacioRepository.js');
 const MongoUsuarioRepository = require('../Infrastructure/Repositories/MongoUsuarioRepository.js');
-const Reserva = require('../Domain/Model/Reserva.js');
-const Espacio = require('../Domain/Model/Espacio.js');
-const Usuario = require('../Domain/Model/Usuario.js');
-const PoliticaReserva = require('../Domain/Value_objects/PoliticaReserva.js');
+const Reserva = require('../Domain/Reserva.js');
+const Espacio = require('../Domain/Espacio.js');
+const Usuario = require('../Domain/Usuario.js');
+const PoliticaReserva = require('../Domain/PoliticaReserva.js');
 const mongoose = require('mongoose');
 
 class ReservaService {
@@ -133,6 +133,38 @@ class ReservaService {
     async getReservasByUserId(userId) {
         const reservas = await this.reservaRepository.find({ idPersona: userId });
         return reservas.map(reservaData => new Reserva(reservaData));
+    }
+
+    async eliminarReservasPotencialmenteInvalidas() {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            const reservas = await this.reservaRepository.find({}, session);
+            const fechaActual = new Date();
+            const reservasPotencialmenteInvalidas = reservas.filter(reserva => {
+                const fechaReserva = new Date(reserva.fecha);
+                const diferenciaEnDiasDesdeTimestamp = Math.ceil((fechaActual - new Date(reserva.timestamp)) / (1000 * 60 * 60 * 24));
+                return (fechaReserva <= fechaActual || diferenciaEnDiasDesdeTimestamp > 7);
+            });
+
+            let reservasEliminadas = 0;
+            const usuariosEliminados = [];
+
+            for (const reserva of reservasPotencialmenteInvalidas) {
+                await this.reservaRepository.delete(reserva.id, session);
+                reservasEliminadas++;
+                usuariosEliminados.push(reserva.idPersona);
+            }
+
+            await session.commitTransaction();
+
+            return { reservasEliminadas, usuariosEliminados };
+        } catch (error) {
+            await session.abortTransaction();
+            throw error;
+        } finally {
+            session.endSession();
+        }
     }
 
     esReservaPotencialmenteInvalida(usuario, espacio) {

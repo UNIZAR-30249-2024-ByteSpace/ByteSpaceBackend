@@ -1,4 +1,4 @@
-// domain/entities/Reserva.js
+// Entidad reserva
 class Reserva {
     constructor({ id, horaInicio, horaFin, fecha, idPersona, idEspacio, potencialInvalida, asistentes, timestamp }) {
         this._id = id;

@@ -1,6 +1,7 @@
-// domain/entities/Usuario.js
-const Departamento = require('../Value_Objects/Departamento');
-const Rol = require('../Value_Objects/Rol');
+// Entidad usuario
+
+const Departamento = require('./Departamento');
+const Rol = require('./Rol');
 
 class Usuario {
     constructor({ id, username, email, password, rol, departamento }) {

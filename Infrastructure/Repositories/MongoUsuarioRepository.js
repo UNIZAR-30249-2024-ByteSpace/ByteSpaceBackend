@@ -1,8 +1,8 @@
 const UsuarioModelo = require('../Models/modelo.usuario');
-const Usuario = require('../../Domain/Model/Usuario');
-const UsuarioRepository = require('../../Domain/Repositories/UsuarioRepository');
+const Usuario = require('../../Domain/Usuario');
+const UsuarioInterface = require('../../Domain/UsuarioInterface');
 
-class MongoUsuarioRepository extends UsuarioRepository {
+class MongoUsuarioRepository extends UsuarioInterface {
     async findByEmail(email) {
         const usuarioDoc = await UsuarioModelo.findOne({ email });
         return usuarioDoc ? new Usuario(usuarioDoc.toObject()) : null;

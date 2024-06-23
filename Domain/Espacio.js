@@ -1,6 +1,6 @@
-// domain/entities/Espacio.js
-const TipoEspacio = require('../Value_objects/TipoEspacio');
-const Departamento = require('../Value_Objects/Departamento');
+// Entidad espacio
+const TipoEspacio = require('./TipoEspacio');
+const Departamento = require('./Departamento');
 
 class Espacio {
     constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta, horaInicio, horaFin }) {

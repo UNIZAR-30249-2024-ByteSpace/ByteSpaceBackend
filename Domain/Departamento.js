@@ -1,4 +1,4 @@
-// domain/value-objects/departamento.js
+// ValueObject Departamento
 
 class Departamento {
     constructor(nombre) {

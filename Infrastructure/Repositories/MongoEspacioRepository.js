@@ -1,9 +1,9 @@
-// repositories/MongoEspacioRepository.js
-const EspacioRepository = require('../../Domain/Repositories/EspacioRepository.js');
+// repositories/MongoEspacioInterface.js
+const EspacioInterface = require('../../Domain/EspacioInterface.js');
 const EspacioModelo = require('../Models/modelo.espacio.js');
-const Espacio = require('../../Domain/Model/Espacio');
+const Espacio = require('../../Domain/Espacio.js');
 
-class MongoEspacioRepository extends EspacioRepository {
+class MongoEspacioRepository extends EspacioInterface {
     async find(query) {
         const espacios = await EspacioModelo.find(query);
         return espacios.map(espacio => new Espacio(espacio));

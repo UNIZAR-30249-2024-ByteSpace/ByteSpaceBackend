@@ -1,4 +1,4 @@
-// domain/value-objects/tipoEspacio.js
+// ValueObject
 
 class TipoEspacio {
     constructor(nombre) {

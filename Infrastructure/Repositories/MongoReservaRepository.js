@@ -1,9 +1,9 @@
-// repositories/MongoReservaRepository.js
-const ReservaRepository = require('../../Domain/Repositories/ReservaRepository.js');
+// repositories/MongoReservaInterface.js
+const ReservaInterface = require('../../Domain/ReservaInterface.js');
 const ReservaModelo = require('../Models/modelo.reserva.js');
-const Reserva = require('../../Domain/Model/Reserva');
+const Reserva = require('../../Domain/Reserva.js');
 
-class MongoReservaRepository extends ReservaRepository {
+class MongoReservaRepository extends ReservaInterface {
     async find(query) {
         const reservas = await ReservaModelo.find(query);
         return reservas.map(reserva => new Reserva(reserva.toObject()));

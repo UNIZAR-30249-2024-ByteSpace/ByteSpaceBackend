@@ -1,5 +1,5 @@
-// repositories/EspacioRepository.js
-class EspacioRepository {
+// repositories/ReservaInterface.js
+class ReservaInterface {
     async find(query) {
         throw new Error('Method not implemented');
     }
@@ -8,7 +8,11 @@ class EspacioRepository {
         throw new Error('Method not implemented');
     }
 
-    async save(espacio, session = null) {
+    async save(reserva, session = null) {
+        throw new Error('Method not implemented');
+    }
+
+    async delete(id, session = null) {
         throw new Error('Method not implemented');
     }
 
@@ -17,4 +21,4 @@ class EspacioRepository {
     }
 }
 
-module.exports = EspacioRepository;
+module.exports = ReservaInterface;
