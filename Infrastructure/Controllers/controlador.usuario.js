@@ -1,4 +1,4 @@
-const UsuarioService = require('../Service/ServicioUsuario');
+const UsuarioService = require('../../Application/ServicioUsuario');
 
 class UsuarioController {
     constructor() {

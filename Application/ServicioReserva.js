@@ -1,11 +1,11 @@
 // services/ReservaService.js
-const MongoReservaRepository = require('../../Infrastructure/Repositories/MongoReservaRepository.js');
-const MongoEspacioRepository = require('../../Infrastructure/Repositories/MongoEspacioRepository.js');
-const MongoUsuarioRepository = require('../../Infrastructure/Repositories/MongoUsuarioRepository.js');
-const Reserva = require('../../Domain/Model/Reserva.js');
-const Espacio = require('../../Domain/Model/Espacio.js');
-const Usuario = require('../../Domain/Model/Usuario.js');
-const PoliticaReserva = require('../../Domain/Value_objects/PoliticaReserva.js');
+const MongoReservaRepository = require('../Infrastructure/Repositories/MongoReservaRepository.js');
+const MongoEspacioRepository = require('../Infrastructure/Repositories/MongoEspacioRepository.js');
+const MongoUsuarioRepository = require('../Infrastructure/Repositories/MongoUsuarioRepository.js');
+const Reserva = require('../Domain/Model/Reserva.js');
+const Espacio = require('../Domain/Model/Espacio.js');
+const Usuario = require('../Domain/Model/Usuario.js');
+const PoliticaReserva = require('../Domain/Value_objects/PoliticaReserva.js');
 const mongoose = require('mongoose');
 
 class ReservaService {
