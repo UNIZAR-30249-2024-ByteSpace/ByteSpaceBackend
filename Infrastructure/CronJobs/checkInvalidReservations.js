@@ -3,7 +3,7 @@
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const ReservaService = require('../../Application/ServicioReserva');
-const UserModel = require('../ModelsDB/modelo.usuario');
+const UserModel = require('../Models/modelo.usuario');
 
 const reservaService = new ReservaService();
 

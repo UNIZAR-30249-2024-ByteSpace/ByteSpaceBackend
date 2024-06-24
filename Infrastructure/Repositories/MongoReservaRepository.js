@@ -1,6 +1,6 @@
 // repositories/MongoReservaInterface.js
 const ReservaInterface = require('../../Domain/ReservaInterface.js');
-const ReservaModelo = require('../ModelsDB/modelo.reserva.js');
+const ReservaModelo = require('../Models/modelo.reserva.js');
 const Reserva = require('../../Domain/Reserva.js');
 
 class MongoReservaRepository extends ReservaInterface {

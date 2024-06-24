@@ -1,4 +1,4 @@
-const UsuarioModelo = require('../ModelsDB/modelo.usuario');
+const UsuarioModelo = require('../Models/modelo.usuario');
 const Usuario = require('../../Domain/Usuario');
 const UsuarioInterface = require('../../Domain/UsuarioInterface');
 

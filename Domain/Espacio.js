@@ -1,26 +1,17 @@
 // Entidad espacio
-const TipoEspacio = require('./TipoEspacio');
-const Departamento = require('./Departamento');
-
 class Espacio {
-    constructor({ id, reservable, categoria, asignadoA, porcentajeOcupacion, tamanio, tipo, maxOcupantes, informacion, planta, horaInicio, horaFin }) {
+    constructor({ id, reservable, porcentajeOcupacion, tamanio, maxOcupantes, informacion, planta, horaInicio, horaFin }) {
         this._id = id;
         this._reservable = reservable;
-        this._categoria = new TipoEspacio(categoria).getNombre();
         this._porcentajeOcupacion = porcentajeOcupacion;
         this._tamanio = tamanio;
         this._maxOcupantes = maxOcupantes;
-        this._tipo = new TipoEspacio(tipo).getNombre();
         this._informacion = informacion;
         this._planta = planta;
         this._horaInicio = horaInicio;
         this._horaFin = horaFin;
 
-        if (asignadoA === 'EINA') {
-            this._asignadoA = asignadoA;
-        } else {
-            this._asignadoA = new Departamento(asignadoA).getNombre();
-        }
+
     }
 
     // Métodos getter
@@ -32,14 +23,6 @@ class Espacio {
         return this._reservable;
     }
 
-    get categoria() {
-        return this._categoria;
-    }
-
-    get asignadoA() {
-        return this._asignadoA;
-    }
-
     get porcentajeOcupacion() {
         return this._porcentajeOcupacion;
     }
@@ -48,9 +31,6 @@ class Espacio {
         return this._tamanio;
     }
 
-    get tipo() {
-        return this._tipo;
-    }
 
     get maxOcupantes() {
         return this._maxOcupantes;
@@ -85,24 +65,12 @@ class Espacio {
         this._reservable = newReservable;
     }
 
-    set categoria(newCategoria) {
-        this._categoria = newCategoria;
-    }
-
-    set asignadoA(newAsignadoA) {
-        this._asignadoA = newAsignadoA;
-    }
-
     set porcentajeOcupacion(newPorcentajeOcupacion) {
         this._porcentajeOcupacion = newPorcentajeOcupacion;
     }
 
     set tamanio(newTamanio) {
         this._tamanio = newTamanio;
-    }
-
-    set tipo(newTipo) {
-        this._tipo = newTipo;
     }
 
     set maxOcupantes(newMaxOcupantes) {
@@ -125,10 +93,6 @@ class Espacio {
         this._horaFin = newHoraFin;
     }
 
-
-    getTipo() {
-        return this.tipo.getNombre();
-    }
 }
 
 module.exports = Espacio;
