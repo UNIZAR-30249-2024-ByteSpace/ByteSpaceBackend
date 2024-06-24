@@ -10,7 +10,7 @@ class EspacioService {
 
     async obtenerEspaciosReservables() {
         const espacios = await this.espacioRepository.find({ reservable: true });
-        return espacios.map(espacioData => new Espacio(espacioData).toSpaceDTO);
+        return espacios.map(espacioData => new Espacio(espacioData).toSpaceDTO());
     }
 
     async obtenerEspacioPorId(id) {
@@ -18,7 +18,7 @@ class EspacioService {
         if (!espacioData) {
             throw new Error('Espacio no encontrado');
         }
-        return new Espacio(espacioData);
+        return new Espacio(espacioData).toSpaceDTO();
     }
 
     async filtrarEspacios(queryParams) {
@@ -40,7 +40,7 @@ class EspacioService {
         }
 
         const espacios = await this.espacioRepository.find(query);
-        return espacios.map(espacioData => new Espacio(espacioData));
+        return espacios.map(espacioData => new Espacio(espacioData).toSpaceDTO());
     }
 
     async actualizarEspacio(id, updatedData) {

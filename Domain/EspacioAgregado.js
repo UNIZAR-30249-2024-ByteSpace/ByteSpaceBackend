@@ -139,6 +139,7 @@ class EspacioAgregado {
             _id: this.espacio.id,
             _categoria: this.categoria,
             _tipo: this.tipo,
+            _asignadoA: this.asignadoA,
             _id : this.espacio.id,
             _reservable : this.espacio.reservable,
             _porcentajeOcupacion : this.espacio.porcentajeOcupacion,
