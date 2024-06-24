@@ -134,6 +134,23 @@ class EspacioAgregado {
         return this.tipo.getNombre();
     }
 
+    toSpaceDTO() {
+        return {
+            _id: this.espacio.id,
+            _categoria: this.categoria,
+            _tipo: this.tipo,
+            _id : this.espacio.id,
+            _reservable : this.espacio.reservable,
+            _porcentajeOcupacion : this.espacio.porcentajeOcupacion,
+            _tamanio : this.espacio.tamanio,
+            _maxOcupantes : this.espacio.maxOcupantes,
+            _informacion : this.espacio.informacion,
+            _planta : this.espacio.planta,
+            _horaInicio : this.espacio.horaInicio,
+            _horaFin : this.espacio.horaFin,
+        };
+  }
+
     set asignadoA(newAsignadoA) {
         this._asignadoA = newAsignadoA;
     }

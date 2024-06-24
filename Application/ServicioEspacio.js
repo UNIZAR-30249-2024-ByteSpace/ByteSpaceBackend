@@ -10,7 +10,7 @@ class EspacioService {
 
     async obtenerEspaciosReservables() {
         const espacios = await this.espacioRepository.find({ reservable: true });
-        return espacios.map(espacioData => new Espacio(espacioData));
+        return espacios.map(espacioData => new Espacio(espacioData).toSpaceDTO);
     }
 
     async obtenerEspacioPorId(id) {
