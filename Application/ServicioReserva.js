@@ -35,7 +35,7 @@ class ReservaService {
             const espacio = new Espacio(espacioDoc);
 
             const maxCapacity = espacio.tamanio * (espacio.porcentajeOcupacion / 100);
-            if (asistentes > maxCapacity) {
+            if (asistentes > maxCapacity || maxCapacity === 0) {
                 throw new Error('El número de asistentes excede la capacidad del espacio');
             }
 
