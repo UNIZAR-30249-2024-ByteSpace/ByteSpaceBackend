@@ -1,5 +1,5 @@
 const UsuarioModelo = require('../Models/modelo.usuario');
-const Usuario = require('../../Domain/Usuario');
+const Usuario = require('../../Domain/UsuarioAgregado');
 const UsuarioInterface = require('../../Domain/UsuarioInterface');
 
 class MongoUsuarioRepository extends UsuarioInterface {

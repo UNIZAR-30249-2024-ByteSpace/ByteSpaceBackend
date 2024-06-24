@@ -18,7 +18,6 @@ class EspacioAgregado {
         } else {
             this._asignadoA = new Departamento(espacio.asignadoA).getNombre();
         }
-
     }
 
     // Métodos getter
@@ -150,7 +149,7 @@ class EspacioAgregado {
             _horaInicio : this.espacio.horaInicio,
             _horaFin : this.espacio.horaFin,
         };
-  }
+    }
 
     set asignadoA(newAsignadoA) {
         this._asignadoA = newAsignadoA;

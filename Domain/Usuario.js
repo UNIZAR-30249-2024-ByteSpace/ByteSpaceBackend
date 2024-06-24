@@ -4,13 +4,13 @@ const Departamento = require('./Departamento');
 const Rol = require('./Rol');
 
 class Usuario {
-    constructor({ id, username, email, password, rol, departamento }) {
-        this._id = id;
-        this._username = username;
-        this._email = email;
-        this._password = password;
-        this._rol = new Rol(rol).getNombre();
-        this._departamento = departamento ? new Departamento(departamento).getNombre() : null; // Manejar caso nulo
+    constructor(usuario) {
+        this._id = usuario.id;
+        this._username = usuario.username;
+        this._email = usuario.email;
+        this._password = usuario.password;
+        //this._rol = new Rol(rol).getNombre();
+        //1this._departamento = departamento ? new Departamento(departamento).getNombre() : null; // Manejar caso nulo
     }
 
     get id() {

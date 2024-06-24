@@ -4,7 +4,7 @@ const MongoEspacioRepository = require('../Infrastructure/Repositories/MongoEspa
 const MongoUsuarioRepository = require('../Infrastructure/Repositories/MongoUsuarioRepository.js');
 const Reserva = require('../Domain/Reserva.js');
 const Espacio = require('../Domain/EspacioAgregado.js');
-const Usuario = require('../Domain/Usuario.js');
+const Usuario = require('../Domain/UsuarioAgregado.js');
 const PoliticaReserva = require('../Domain/PoliticaReserva.js');
 const mongoose = require('mongoose');
 
