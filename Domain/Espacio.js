@@ -1,17 +1,15 @@
 // Entidad espacio
 class Espacio {
-    constructor({ id, reservable, porcentajeOcupacion, tamanio, maxOcupantes, informacion, planta, horaInicio, horaFin }) {
-        this._id = id;
-        this._reservable = reservable;
-        this._porcentajeOcupacion = porcentajeOcupacion;
-        this._tamanio = tamanio;
-        this._maxOcupantes = maxOcupantes;
-        this._informacion = informacion;
-        this._planta = planta;
-        this._horaInicio = horaInicio;
-        this._horaFin = horaFin;
-
-
+    constructor(espacio) {
+        this._id = espacio.id;
+        this._reservable = espacio.reservable;
+        this._porcentajeOcupacion = espacio.porcentajeOcupacion;
+        this._tamanio = espacio.tamanio;
+        this._maxOcupantes = espacio.maxOcupantes;
+        this._informacion = espacio.informacion;
+        this._planta = espacio.planta;
+        this._horaInicio = espacio.horaInicio;
+        this._horaFin = espacio.horaFin;
     }
 
     // Métodos getter

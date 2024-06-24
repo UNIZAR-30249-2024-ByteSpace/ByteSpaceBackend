@@ -6,6 +6,7 @@ class EspacioController {
     obtenerEspaciosReservables = async (req, res) => {
         try {
             const espacios = await espacioService.obtenerEspaciosReservables();
+            console.log("Espacio: " + espacios[0]._espacio)
             res.status(200).json(espacios);
         } catch (error) {
             console.error('Error al obtener espacios reservables por planta:', error.message);

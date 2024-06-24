@@ -8,14 +8,15 @@ const TipoEspacio = require('./TipoEspacio');
 const Departamento = require('./Departamento');
 
 class EspacioAgregado {
-    constructor({ espacio, categoria, tipo, asignadoA }) {
+    constructor(espacio) {
         this._espacio = new Espacio(espacio);
-        this._categoria = new TipoEspacio(categoria).getNombre();
-        this._tipo = new TipoEspacio(tipo).getNombre();
-        if (asignadoA === 'EINA') {
-            this._asignadoA = asignadoA;
+        console.log("espacio._categoria:" + espacio.categoria)
+        this._categoria = new TipoEspacio(espacio.categoria).getNombre();
+        this._tipo = new TipoEspacio(espacio.tipo).getNombre();
+        if (espacio.asignadoA === 'EINA') {
+            this._asignadoA = espacio.asignadoA;
         } else {
-            this._asignadoA = new Departamento(asignadoA).getNombre();
+            this._asignadoA = new Departamento(espacio.asignadoA).getNombre();
         }
 
     }
